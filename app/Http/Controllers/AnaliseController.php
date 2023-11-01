@@ -68,15 +68,7 @@ class AnaliseController extends Controller
         AnaliseController::positivo($chor);
       }
     }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->cifra->dissonancia == "sim"))){
-      if($s == 1){
-        $this->cifra->enarmonia = "sim";
-        if($ac == '#'){
-          $this->cifra->sustOuBemol = "sustenido";
-        }elseif($ac == 'b'){
-          $this->cifra->sustOuBemol = "bemol";
-        }
-      }      
-      $this->cifra->dissonancia = "nao";
+      AuxiliarController::processaSustenidoEBemol($this->cifra, $s, $ac);
       AnaliseController::increm($chor, $s);
     }}/*/elseif/space
     }elseif((($ac == 'm')&&($s == 1))&&($this->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->enarmonia == "sim")&&($this->composto == "nao"))){

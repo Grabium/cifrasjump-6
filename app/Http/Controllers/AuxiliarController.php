@@ -27,7 +27,18 @@ class AuxiliarController extends Controller
     }
   }
 
-  
+  public static function processaSustenidoEBemol(CifraController $cifra, $s, $ac)
+  {
+    if($s == 1){
+      $cifra->enarmonia = "sim";
+      if($ac == '#'){
+        $cifra->sustOuBemol = "sustenido";
+      }elseif($ac == 'b'){
+        $cifra->sustOuBemol = "bemol";
+      }
+    }      
+    $cifra->dissonancia = "nao";
+  }
 
   
 }
