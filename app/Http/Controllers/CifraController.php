@@ -9,6 +9,7 @@ class CifraController extends Controller
     private int $semiTons;
     private $possivelInversao = 'nao';
     private $enarmonia = 'nao';
+    private $invertido = 'nao' ;
 
     public function setSemiTons(int $semiTons)
     {
@@ -27,7 +28,12 @@ class CifraController extends Controller
 
     public function defaultPossivelInversao()
     {
-        $this->possivelInvercao = false ;
-        $this->invertido = false ;
+        $this->possivelInvercao = 'nao' ;
+        $this->invertido = 'nao' ;
+    }
+
+    public function getInvertido()
+    {
+        return $this->invertido;
     }
 }
