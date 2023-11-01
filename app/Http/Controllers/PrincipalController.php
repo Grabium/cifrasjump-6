@@ -24,7 +24,7 @@ class PrincipalController extends Controller
 	}
 	
 	public function recebetexto(Request $request){
-		$this->cifra->setSemiTons($request['semiTons']);
+		$this->cifra->setSemiTons($request['semiTons']); //criar um middleware para autenticar int|min=-11|max=11
 		$this->texto->setTexto($request['aSeparar']);
 		$this->loopTexto($this->texto->getTexto());
 	}

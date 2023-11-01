@@ -24,14 +24,23 @@ class AnaliseController extends Controller
     AnaliseController::space($chor, $ac, $s);
   }
 
+  function positivo($chor){ 
+    //dd($chor);
+    $positivo = $this->cifra->formataPositivo($chor);//retorna array
+    //dd($positivo);
+    echo "<br /> - $positivo[0] - $positivo[1] - é um acorde<br />";
+    $this->cifra->setCifraDefault($positivo);
+    dd($this->cifra);
+    //$this->conversor->converter($positivo);
+  }
+
   function space($chor, $ac, $s){
-    //
     if(($ac == ' ')||($this->cifra->getInvertido() == 'sim')){ 
       if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->getInvertido() == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto, $chor, $ac, $s); 
         //dd($rotacionar);
         if($rotacionar[0] == 'positivo'){
-          echo 'ea positivo';
+          AnaliseController::positivo($rotacionar[1]); //positivo($chor)
         }elseif('increm'){
           echo 'ea incrementar';
         }
