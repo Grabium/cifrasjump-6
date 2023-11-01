@@ -7,15 +7,15 @@ use Illuminate\Http\Request;
 class CifraController extends Controller
 {
   private int $semiTons;
-  private $possivelInversao = 'nao';
-  private $enarmonia = 'nao';
-  private $invertido = 'nao' ;
-  private $composto = "nao";
-  private $sustOuBemol = "natural";
-  private $sustOuBemolInv = "naturalInv";
-  private $tomDaInversao = [];//array();
-  private $dissonancia = "nao";
-  private $terca = "nao testada";
+  public $possivelInversao = 'nao';
+  public $enarmonia = 'nao';
+  public $invertido = 'nao' ;
+  public $composto = "nao";
+  public $sustOuBemol = "natural";
+  public $sustOuBemolInv = "naturalInv";
+  public $tomDaInversao = [];//array();
+  public $dissonancia = "nao";
+  public $terca = "nao testada";
 
   public function setSemiTons(int $semiTons)
   {
@@ -27,21 +27,12 @@ class CifraController extends Controller
     return $this->semiTons;
   }
 
-  public function getPossivelInversao()
-  {
-    return $this->possivelInversao;
-  }
-
   public function defaultPossivelInversao()
   {
     $this->possivelInvercao = 'nao' ;
     $this->invertido = 'nao' ;
   }
 
-  public function getInvertido()
-  {
-    return $this->invertido;
-  }
 
   function formataPositivo($chor)
     {

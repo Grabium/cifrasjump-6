@@ -40,19 +40,20 @@ class AnaliseController extends Controller
 
   function increm($chor, $s){
     //dd($this->cifra);
-    /*static $contador = 1;
+    static $contador = 1;
     echo "<br> incrementado $contador vez(es).";
-    $contador ++;*/
+    $contador ++;
     
     $s ++;
+    echo "<br>s increm: [$s]<br>";
     $ac = $chor[$s];
     AnaliseController::space($chor, $ac, $s);
   }
 
   function space($chor, $ac, $s){
     //dd($this->cifra);
-    if(($ac == ' ')||($this->cifra->getInvertido() == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
-      if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->getInvertido() == 'nao')){
+    if(($ac == ' ')||($this->cifra->invertido == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
+      if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->invertido == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto, $chor, $ac, $s); //:array 
         if($rotacionar[0] == 'positivo'){
           echo "$chor ea positivo";
@@ -66,18 +67,18 @@ class AnaliseController extends Controller
         Echo"<br/>ponto a .$ac.";
         AnaliseController::positivo($chor);
       }
-      }}/*
-    }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->dissonancia == "sim"))){
+    }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->cifra->dissonancia == "sim"))){
       if($s == 1){
-        $this->enarmonia = "sim";
+        $this->cifra->enarmonia = "sim";
         if($ac == '#'){
-          $this->sustOuBemol = "sustenido";
+          $this->cifra->sustOuBemol = "sustenido";
         }elseif($ac == 'b'){
-          $this->sustOuBemol = "bemol";
+          $this->cifra->sustOuBemol = "bemol";
         }
       }      
-      $this->dissonancia = "nao";
-      PrincipalController::increm($chor, $ac, $s);
+      $this->cifra->dissonancia = "nao";
+      AnaliseController::increm($chor, $s);
+    }}/*/elseif/space
     }elseif((($ac == 'm')&&($s == 1))&&($this->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->enarmonia == "sim")&&($this->composto == "nao"))){
       $this->enarmonia == "nao";
       $this->terca = "testada";
@@ -113,4 +114,4 @@ class AnaliseController extends Controller
       echo "<br/>$chor não é acorde!<br /><br />";
     }
   }//space*/
-}
+}//classe

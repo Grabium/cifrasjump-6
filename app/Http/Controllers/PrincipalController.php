@@ -41,7 +41,7 @@ class PrincipalController extends Controller
 			}
 
 			if(in_array($car, $this->analise->naturais)){ 
-				if($this->cifra->getPossivelInversao() == 'nao'){ 
+				if($this->cifra->possivelInversao == 'nao'){ 
 					$chor = substr($texto, $i, ($this->complChor+1)); 
 					if($i >= $this->complChor){
 						if(($this->auxiliar->endString($chor)) == "positivo"){
