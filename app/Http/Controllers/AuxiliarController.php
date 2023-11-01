@@ -17,15 +17,12 @@ class AuxiliarController extends Controller
   }
 
   public static function seEouA(TextoController $texto, $chor, $ac, $s){
-    //echo "<br>texto: $texto->texto;<br>ea: $texto->ea;<br>chor: $chor";
-    //var_dump(in_array("F", (new AnaliseController)->naturais)); 
-    if(($texto->texto[$texto->ea -1] == "%")&&(!in_array($chor[2], (new AnaliseController)->naturais))&&($chor[1] != " ")&&($chor[2] != "%")){
-      $chor = "*eanao*";
-      //Echo"<br/>ponto b =$chor.";
-      return ['increm', $chor]; //AnaliseController::increm($chor, $ac, $s);
+    //if(($texto->texto[$texto->ea -1] == "%")&&(!in_array($chor[2], (new AnaliseController)->naturais))&&($chor[1] != " ")&&($chor[2] != "%")){
+    if(($texto->texto[$texto->ea -1] == "%")){
+      $chor = "*eanao*";//o if acima testa se a letra é início de frase.
+      return ['increm', $chor]; //AnaliseController::increm($chor, $s);
     }else{
       $chor = substr($chor, 0, ($s));
-      //Echo"<br/>ponto c =$ac.";
       return ['positivo', $chor]; // encaminha para AnaliseController::positivo($chor);
     }
   }

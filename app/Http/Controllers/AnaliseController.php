@@ -24,31 +24,49 @@ class AnaliseController extends Controller
     AnaliseController::space($chor, $ac, $s);
   }
 
+  function pre_positivo($chor, CifraController $cifra)
+  {
+    $this->cifra = $cifra;
+    AnaliseController::positivo($chor);
+  }
+
   function positivo($chor){ 
-    //dd($chor);
     $positivo = $this->cifra->formataPositivo($chor);//retorna array
-    //dd($positivo);
     echo "<br /> - $positivo[0] - $positivo[1] - é um acorde<br />";
     $this->cifra->setCifraDefault($positivo);
-    dd($this->cifra);
+    //dd($this->cifra);
     //$this->conversor->converter($positivo);
   }
 
+  function increm($chor, $s){
+    //dd($this->cifra);
+    /*static $contador = 1;
+    echo "<br> incrementado $contador vez(es).";
+    $contador ++;*/
+    
+    $s ++;
+    $ac = $chor[$s];
+    AnaliseController::space($chor, $ac, $s);
+  }
+
   function space($chor, $ac, $s){
-    if(($ac == ' ')||($this->cifra->getInvertido() == 'sim')){ 
+    //dd($this->cifra);
+    if(($ac == ' ')||($this->cifra->getInvertido() == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
       if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->getInvertido() == 'nao')){
-        $rotacionar = AuxiliarController::seEouA($this->texto, $chor, $ac, $s); 
-        //dd($rotacionar);
+        $rotacionar = AuxiliarController::seEouA($this->texto, $chor, $ac, $s); //:array 
         if($rotacionar[0] == 'positivo'){
+          echo "$chor ea positivo";
           AnaliseController::positivo($rotacionar[1]); //positivo($chor)
-        }elseif('increm'){
-          echo 'ea incrementar';
+        }else if($rotacionar[0] == 'increm'){
+          echo "$chor ea incrementar";
+          AnaliseController::increm($chor, $s);
         }
       }else{
         $chor = substr($chor, 0, ($s));
-        Echo"<br/>ponto a .$ac.";}}}/*
-        PrincipalController::positivo($chor);
+        Echo"<br/>ponto a .$ac.";
+        AnaliseController::positivo($chor);
       }
+      }}/*
     }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->dissonancia == "sim"))){
       if($s == 1){
         $this->enarmonia = "sim";

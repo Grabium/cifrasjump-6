@@ -30,6 +30,7 @@ class PrincipalController extends Controller
 	}
 
 	public function loopTexto($texto){
+		echo $texto;
 		$l = strlen($texto);
 		for($i=0; $i<$l; $i++){
 			$car = $texto[$i];
@@ -44,21 +45,19 @@ class PrincipalController extends Controller
 					$chor = substr($texto, $i, ($this->complChor+1)); 
 					if($i >= $this->complChor){
 						if(($this->auxiliar->endString($chor)) == "positivo"){
-							echo '<br>É um acorde no fim do texto';
-							//PrincipalController::positivo($chor);
+							echo "<br>$chor É um acorde no fim do texto";
+							$this->analise->pre_positivo($chor, $this->cifra);//antes de encaminhar positivo(), análise recebe objeto.
 						}else{
-							echo "<br>analisar este fim de texto";
-							//PrincipalController::analizar1($chor);//jogar para o analizar1();
+							echo "<br>$chor analisar este fim de texto";
+							$this->analise->analisar1($this->cifra, $this->texto, $chor);
 						}
 					}else{
-						echo '<br>Não é fim de texto';
+						echo "<br>$chor Não é fim de texto";
 						$this->analise->analisar1($this->cifra, $this->texto, $chor);
 					}
 				}else{ //possível inversão.
 					$this->cifra->defaultPossivelInversao();
-						
 				}					
-				
 			}////if ABCDEFG
 		}//for() principal que define o $chor
 	}//function loopTexto()
