@@ -71,24 +71,30 @@ class AuxiliarController extends Controller
           return ['space', $chor, $ac, $s];//AnaliseController::space($chor, $ac, $s);
         }
       }else{
-        return = AuxiliarController::seNum($ac);
+        return AuxiliarController::seNum($chor, $ac, $s);
       }
     }else{
-      return = AuxiliarController::seNum($ac);
+      return AuxiliarController::seNum($chor, $ac, $s);
     }//bloco do if(in_array...
   }//bar()
 
   function seNum($chor, $ac, $s){
     if((in_array($ac, $cifra->numeros))&&($cifra->dissonancia == "nao")){
-      AuxiliarController::numOk();
+      return AuxiliarController::numOk($chor, $s);
     }else{
       return ['space', $chor, $ac, $s];;
     }
   }
 
   function numOk($chor, $s){
-        $cifra->dissonancia = "sim";
-      return ['increm', $chor, $s]; //AnaliseController::increm($chor, $ac, $s);
+      $cifra->dissonancia = "sim";
+      return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
   }
-  
+
+  public static function parentesis(CifraController $cifra, $chor, $ac, $s){
+    $analise->parentesis = "aberto";
+    $s ++;
+    $ac = $chor[$s];
+    return AuxiliarController::seNum($chor, $ac, $s);
+  }
 }

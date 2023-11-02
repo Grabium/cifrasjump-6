@@ -10,6 +10,7 @@ class AnaliseController extends Controller
   public $naturais = ['C','D','E','F','G','A','B'];
   private $cifra;
   private $texto;
+  pulbic $parentesis = "fechado";
 
   function __construct()
   {
@@ -69,39 +70,42 @@ class AnaliseController extends Controller
     }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->cifra->dissonancia == "sim"))){
       AuxiliarController::processaSustenidoEBemol($this->cifra, $s, $ac);
       AnaliseController::increm($chor, $s);
-    }elseif((($ac == 'm')&&($s == 1))&&($this->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->enarmonia == "sim")&&($this->composto == "nao"))){
-      $this->enarmonia = "nao";
-      $this->terca = "testada";
+    }elseif((($ac == 'm')&&($s == 1))&&($this->cifra->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->cifra->enarmonia == "sim")&&($this->cifra->composto == "nao"))){
+      $this->cifra->enarmonia = "nao";
+      $this->cifra->terca = "testada";
       AnaliseController::increm($chor, $s);
-    }elseif((($ac == '+')||($ac == '-')&&($this->composto == "nao"))&&(($s == 1)||($this->dissonancia == "sim")&&($this->composto == "nao"))){
-      $this->dissonancia = "nao";
+    }elseif((($ac == '+')||($ac == '-')&&($this->cifra->composto == "nao"))&&(($s == 1)||($this->cifra->dissonancia == "sim")&&($this->cifra->composto == "nao"))){
+      $this->cifra->dissonancia = "nao";
       AnaliseController::increm($chor, $s);
-    }elseif(($ac == '/')&&($this->composto == "nao")){
-      $this->dissonancia = "nao";
+    }elseif(($ac == '/')&&($this->cifra->composto == "nao")){
+      $this->cifra->dissonancia = "nao";
       $rotacionar = AuxiliarController::bar($this->cifra, $chor, $ac, $s);
       $funcao = array_shift($rotacionar);
       AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
-    }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->composto == "nao")){//=======================
-      PrincipalController::parentesis($chor, $ac, $s);
-    }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->composto == "nao")){
-      $this->dissonancia = "nao";
+    }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->cifra->composto == "nao")){
+      $rotacionar = AuxiliarController::parentesis($chor, $ac, $s);
+       $funcao = array_shift($rotacionar);
+       AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
+    }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->cifra->composto == "nao")){//======================= continuar daqui.
+      $this->cifra->dissonancia = "nao";
       $this->parentesis = "fechado";
       AnaliseController::increm($chor, $ac, $s);
-    }elseif(in_array($ac, $this->numeros)&&($this->dissonancia == "nao")&&($this->composto == "nao")){  //numeros de 2 a 9.
-      PrincipalController::numOk($chor, $ac, $s);
-    }elseif(($ac == "1")&&($this->dissonancia == "nao")&&($this->composto == "nao")){  //numero 1 para contruir 10 a 14
-      PrincipalController::compostoIncompleto($chor, $ac, $s);
-    }elseif((in_array($ac, $this->intComposto))&&($this->composto == "sim")){  //numeros de 10 a 14
-      PrincipalController::compostoCompleto($chor, $ac, $s);
-    }elseif((($ac == 'd')&&($s == 1))||(($s == 2)&&($this->enarmonia == "sim"))){  //dim
-      PrincipalController::seDim($chor, $ac, $s);
+    }elseif(in_array($ac, $this->numeros)&&($this->cifra->dissonancia == "nao")&&($this->cifra->composto == "nao")){  //numeros de 2 a 9.
+      AuxiliarController::numOk($chor, $ac, $s);
+    }elseif(($ac == "1")&&($this->cifra->dissonancia == "nao")&&($this->cifra->composto == "nao")){  //numero 1 para contruir 10 a 14
+      AuxiliarController::compostoIncompleto($chor, $ac, $s);
+    }elseif((in_array($ac, $this->intComposto))&&($this->cifra->composto == "sim")){  //numeros de 10 a 14
+      AuxiliarController::compostoCompleto($chor, $ac, $s);
+    }elseif((($ac == 'd')&&($s == 1))||(($s == 2)&&($this->cifra->enarmonia == "sim"))){  //dim
+      AuxiliarController::seDim($chor, $ac, $s);
     }else{
-      $this->composto = "nao";
-      $this->enarmonia = "nao";
-      $this->dissonancia = "nao";
       $this->parentesis = "fechado";
-      $this->sustOuBemol = "natural";
-      $this->sustOuBemolInv = "naturalInv";
+      
+      $this->cifra->composto = "nao";
+      $this->cifra->enarmonia = "nao";
+      $this->cifra->dissonancia = "nao";
+      $this->cifra->sustOuBemol = "natural";
+      $this->cifra->sustOuBemolInv = "naturalInv";
       echo "<br/>$chor não é acorde!<br /><br />";
     }
   }//space*/
