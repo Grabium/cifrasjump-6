@@ -39,10 +39,11 @@ class AnaliseController extends Controller
   }
 
   function increm($chor, $s){
-    //dd($this->cifra);
+    /*
     static $contador = 1;
     echo "<br> incrementado $contador vez(es).";
     $contador ++;
+    */
     
     $s ++;
     echo "<br>s increm: [$s]<br>";
@@ -51,42 +52,41 @@ class AnaliseController extends Controller
   }
 
   function space($chor, $ac, $s){
-    //dd($this->cifra);
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
       if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->invertido == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto, $chor, $ac, $s); //:array 
-        if($rotacionar[0] == 'positivo'){
-          echo "$chor ea positivo";
+        $funcao = array_shift($rotacionar);
+        AnaliseController::$funcao(...$rotacionar); //positivo(chor) || increm(chor, s)
+        /*if($rotacionar[0] == 'positivo'){
           AnaliseController::positivo($rotacionar[1]); //positivo($chor)
         }else if($rotacionar[0] == 'increm'){
-          echo "$chor ea incrementar";
           AnaliseController::increm($chor, $s);
-        }
+        }*/
       }else{
         $chor = substr($chor, 0, ($s));
-        Echo"<br/>ponto a .$ac.";
         AnaliseController::positivo($chor);
       }
     }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->cifra->dissonancia == "sim"))){
       AuxiliarController::processaSustenidoEBemol($this->cifra, $s, $ac);
       AnaliseController::increm($chor, $s);
-    }}/*/elseif/space
     }elseif((($ac == 'm')&&($s == 1))&&($this->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->enarmonia == "sim")&&($this->composto == "nao"))){
-      $this->enarmonia == "nao";
+      $this->enarmonia = "nao";
       $this->terca = "testada";
-      PrincipalController::increm($chor, $ac, $s);
+      AnaliseController::increm($chor, $s);
     }elseif((($ac == '+')||($ac == '-')&&($this->composto == "nao"))&&(($s == 1)||($this->dissonancia == "sim")&&($this->composto == "nao"))){
       $this->dissonancia = "nao";
-      PrincipalController::increm($chor, $ac, $s);
+      AnaliseController::increm($chor, $s);
     }elseif(($ac == '/')&&($this->composto == "nao")){
       $this->dissonancia = "nao";
-      PrincipalController::bar($chor, $ac, $s);
-    }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->composto == "nao")){
+      $rotacionar = AuxiliarController::bar($this->cifra, $chor, $ac, $s);
+      $funcao = array_shift($rotacionar);
+      AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
+    }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->composto == "nao")){//=======================
       PrincipalController::parentesis($chor, $ac, $s);
     }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->composto == "nao")){
       $this->dissonancia = "nao";
       $this->parentesis = "fechado";
-      PrincipalController::increm($chor, $ac, $s);
+      AnaliseController::increm($chor, $ac, $s);
     }elseif(in_array($ac, $this->numeros)&&($this->dissonancia == "nao")&&($this->composto == "nao")){  //numeros de 2 a 9.
       PrincipalController::numOk($chor, $ac, $s);
     }elseif(($ac == "1")&&($this->dissonancia == "nao")&&($this->composto == "nao")){  //numero 1 para contruir 10 a 14
@@ -94,7 +94,6 @@ class AnaliseController extends Controller
     }elseif((in_array($ac, $this->intComposto))&&($this->composto == "sim")){  //numeros de 10 a 14
       PrincipalController::compostoCompleto($chor, $ac, $s);
     }elseif((($ac == 'd')&&($s == 1))||(($s == 2)&&($this->enarmonia == "sim"))){  //dim
-      //echo "teste dim";
       PrincipalController::seDim($chor, $ac, $s);
     }else{
       $this->composto = "nao";
