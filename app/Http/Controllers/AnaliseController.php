@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 class AnaliseController extends Controller
 {
   public $naturais = ['C','D','E','F','G','A','B'];
+  private $numeros = ['2', '3', '4', '5', '6', '7', '9'];
+  private $intComposto = ['0', '1', '2', '3', '4'];
   private $cifra;
   private $texto;
   pulbic $parentesis = "fechado";
@@ -68,7 +70,7 @@ class AnaliseController extends Controller
         AnaliseController::positivo($chor);
       }
     }elseif(($ac == '#')||($ac == 'b')&&(($s == 1)||($this->cifra->dissonancia == "sim"))){
-      AuxiliarController::processaSustenidoEBemol($this->cifra, $s, $ac);
+      AuxiliarController::processaSustenidoEBemol($this->cifra, $ac, $s);
       AnaliseController::increm($chor, $s);
     }elseif((($ac == 'm')&&($s == 1))&&($this->cifra->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->cifra->enarmonia == "sim")&&($this->cifra->composto == "nao"))){
       $this->cifra->enarmonia = "nao";
@@ -86,18 +88,21 @@ class AnaliseController extends Controller
       $rotacionar = AuxiliarController::parentesis($chor, $ac, $s);
        $funcao = array_shift($rotacionar);
        AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
-    }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->cifra->composto == "nao")){//======================= continuar daqui.
+    }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
       $this->parentesis = "fechado";
-      AnaliseController::increm($chor, $ac, $s);
+      AnaliseController::increm($chor, $s);
     }elseif(in_array($ac, $this->numeros)&&($this->cifra->dissonancia == "nao")&&($this->cifra->composto == "nao")){  //numeros de 2 a 9.
-      AuxiliarController::numOk($chor, $ac, $s);
+      AuxiliarController::numOk($chor, $s);
+      AnaliseController::increm($chor, $s);
     }elseif(($ac == "1")&&($this->cifra->dissonancia == "nao")&&($this->cifra->composto == "nao")){  //numero 1 para contruir 10 a 14
-      AuxiliarController::compostoIncompleto($chor, $ac, $s);
+      AuxiliarController::compostoIncompleto($this->cifra);
+      AnaliseController::increm($chor, $s);
     }elseif((in_array($ac, $this->intComposto))&&($this->cifra->composto == "sim")){  //numeros de 10 a 14
-      AuxiliarController::compostoCompleto($chor, $ac, $s);
+      AuxiliarController::compostoCompleto($this->cifra);//continuar daqui
+      AnaliseController::increm($chor, $s);
     }elseif((($ac == 'd')&&($s == 1))||(($s == 2)&&($this->cifra->enarmonia == "sim"))){  //dim
-      AuxiliarController::seDim($chor, $ac, $s);
+      eval(AuxiliarController::seDim($chor, $ac, $s));
     }else{
       $this->parentesis = "fechado";
       

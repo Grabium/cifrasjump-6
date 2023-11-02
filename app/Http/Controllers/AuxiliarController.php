@@ -27,7 +27,7 @@ class AuxiliarController extends Controller
     }
   }
 
-  public static function processaSustenidoEBemol(CifraController $cifra, $s, $ac)
+  public static function processaSustenidoEBemol(CifraController $cifra, $ac, $s)
   {
     if($s == 1){
       $cifra->enarmonia = "sim";
@@ -86,7 +86,7 @@ class AuxiliarController extends Controller
     }
   }
 
-  function numOk($chor, $s){
+  function numOk(CifraController $cifra, $chor, $s){
       $cifra->dissonancia = "sim";
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
   }
@@ -96,5 +96,21 @@ class AuxiliarController extends Controller
     $s ++;
     $ac = $chor[$s];
     return AuxiliarController::seNum($chor, $ac, $s);
+  }
+
+  public static function compostoIncompleto(CifraController $cifra){
+    $cifra->composto = "sim"; 
+  }
+
+  public static function compostoCompleto(CifraController $cifra){
+    $cifra->composto = "nao";
+  }
+
+  function seDim($chor, $ac, $s){
+    $dim = substr($chor, $s, 3); //espera receber a string ["d","i","m"]
+    if($dim == "dim"){
+      $s = ($s+2);
+    }
+    return 'AnaliseController::increm($chor, $s);';
   }
 }
