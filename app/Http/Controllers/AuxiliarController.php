@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\AnaliseController;
 
 class AuxiliarController extends Controller
 {
+  /*
+  private $analise;
+
+  function __construct()
+  {
+    $this->analise = new AnaliseController();
+  }*/
+  
   function endString($chor){
     $l = strlen($chor);
     if($l == 1){
@@ -16,13 +25,13 @@ class AuxiliarController extends Controller
     }
   }
 
-  public static function seEouA(TextoController $texto, $chor, $s){
+  public static function seEouA($ea, $chor, $s){
     //if(($texto->texto[$texto->ea -1] == "%")&&(!in_array($chor[2], (new AnaliseController)->naturais))&&($chor[1] != " ")&&($chor[2] != "%")){
-    if(($texto->texto[$texto->ea -1] == "%")){
+    if(($ea == "%")){
       $chor = "*eanao*";//o if acima testa se a letra é início de frase.
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
     }else{
-      $chor = substr($chor, 0, ($s));
+      $chor = substr($chor, 0, $s);
       return ['positivo', $chor]; // encaminha para AnaliseController::positivo($chor);
     }
   }
@@ -40,13 +49,13 @@ class AuxiliarController extends Controller
     $cifra->dissonancia = "nao";
   }
 
-  public static function bar(CifraController $cifra, $chor, $ac, $s)
+  public static function bar(CifraController $cifra, $naturais, $chor, $ac, $s)
   {
     echo "passou barra";
     $s ++;
     $ac = $chor[$s];
     //echo gettype($ac);// fim de teste
-    if(in_array($ac, $analise->naturais)){ //talvez esteja errado
+    if(in_array($ac, $naturais)){ //talvez esteja errado
       $cifra->possivelInvercao = 'sim';
       $s ++;
       $ac = $chor[$s];
@@ -54,7 +63,7 @@ class AuxiliarController extends Controller
         $cifra->tomDaInversao = $chor[$s-1];//array($s - 1, 1);
         $cifra->invertido = 'sim';
         $cifra->sustOuBemolInv = "naturalInv";
-        ECHO "<br /><br /><br /><br /><br />Inversão sus ou bem de ".$chor." analiz:".$ac." : ".$cifra->sustOuBemolInv."<br />";
+        //ECHO "<br /><br /><br /><br /><br />Inversão sus ou bem de ".$chor." analiz:".$ac." : ".$cifra->sustOuBemolInv."<br />";
         return ['space', $chor, $ac, $s];//AnaliseController::space($chor, $ac, $s);
       }elseif(($ac == '#')||($ac == 'b')){
         if($ac == '#'){
@@ -62,7 +71,7 @@ class AuxiliarController extends Controller
         }elseif($ac == 'b'){
           $cifra->sustOuBemolInv = "bemolInv";
         }
-        ECHO "<br /><br /><br /><br /><br />Inversão sus ou bem de ".$chor." analiz:".$ac." : ".$cifra->sustOuBemolInv."<br />";
+        //ECHO "<br /><br /><br /><br /><br />Inversão sus ou bem de ".$chor." analiz:".$ac." : ".$cifra->sustOuBemolInv."<br />";
         $s ++;
         $ac = $chor[$s];
         if($ac == " "){
@@ -80,13 +89,13 @@ class AuxiliarController extends Controller
 
   function seNum($chor, $ac, $s){
     if((in_array($ac, $cifra->numeros))&&($cifra->dissonancia == "nao")){
-      return AuxiliarController::numOk($chor, $s);
+      return AuxiliarController::numOk($cifra->numeros, $chor, $s);
     }else{
       return ['space', $chor, $ac, $s];;
     }
   }
 
-  function numOk(CifraController $cifra, $chor, $s){
+  public static function numOk(CifraController $cifra, $chor, $s){
       $cifra->dissonancia = "sim";
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
   }
@@ -100,17 +109,19 @@ class AuxiliarController extends Controller
 
   public static function compostoIncompleto(CifraController $cifra){
     $cifra->composto = "sim"; 
+    echo '<br><br><br><br>composto incompleto.';
   }
 
   public static function compostoCompleto(CifraController $cifra){
     $cifra->composto = "nao";
   }
 
-  function seDim($chor, $ac, $s){
+  public static function seDim($chor, $s){
     $dim = substr($chor, $s, 3); //espera receber a string ["d","i","m"]
     if($dim == "dim"){
       $s = ($s+2);
     }
-    return 'AnaliseController::increm($chor, $s);';
+    return [$chor, $s];
+    //return "AnaliseController::increm('$chor', '$s');";
   }
 }

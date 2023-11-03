@@ -43,16 +43,14 @@ class PrincipalController extends Controller
 			if(in_array($car, $this->analise->naturais)){ 
 				if($this->cifra->possivelInversao == 'nao'){ 
 					$chor = substr($texto, $i, ($this->complChor+1)); 
+					echo "<br/><br/><br/><br/><br/><br/>$chor será analisado";
 					if($i >= $this->complChor){
 						if(($this->auxiliar->endString($chor)) == "positivo"){
-							echo "<br>$chor É um acorde no fim do texto";
 							$this->analise->pre_positivo($chor, $this->cifra);//antes de encaminhar positivo(), análise recebe objeto.
 						}else{
-							echo "<br>$chor analisar este fim de texto";
 							$this->analise->analisar1($this->cifra, $this->texto, $chor);
 						}
 					}else{
-						echo "<br>$chor Não é fim de texto";
 						$this->analise->analisar1($this->cifra, $this->texto, $chor);
 					}
 				}else{ //possível inversão.

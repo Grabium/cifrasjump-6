@@ -12,14 +12,10 @@ class AnaliseController extends Controller
   private $intComposto = ['0', '1', '2', '3', '4'];
   private $cifra;
   private $texto;
-  pulbic $parentesis = "fechado";
+  public $parentesis = "fechado";
 
-  function __construct()
+  function analisar1(CifraController $cifra, TextoController $texto, $chor)
   {
-      //
-  }
-
-  function analisar1(CifraController $cifra, TextoController $texto, $chor){
     $this->cifra = $cifra;
     $this->texto = $texto;
     $s = 1; //índice do $chor a ser analizado
@@ -34,37 +30,27 @@ class AnaliseController extends Controller
   }
 
   function positivo($chor){ 
+    static $contaAcordes = 1;
     $positivo = $this->cifra->formataPositivo($chor);//retorna array
-    echo "<br /> - $positivo[0] - $positivo[1] - é um acorde<br />";
+    echo "<br/><br/><br/><br/><br/><br/> - $positivo[0] - $positivo[1] - é o $contaAcordes ° acorde";
+    $contaAcordes ++;
     $this->cifra->setCifraDefault($positivo);
-    //dd($this->cifra);
-    //$this->conversor->converter($positivo);
   }
 
-  function increm($chor, $s){
-    /*
-    static $contador = 1;
-    echo "<br> incrementado $contador vez(es).";
-    $contador ++;
-    */
-    
+  function increm($chor, $s)
+  {   
     $s ++;
-    echo "<br>s increm: [$s]<br>";
     $ac = $chor[$s];
     AnaliseController::space($chor, $ac, $s);
   }
 
-  function space($chor, $ac, $s){
+  function space($chor, $ac, $s)
+  {
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
       if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->invertido == 'nao')){
-        $rotacionar = AuxiliarController::seEouA($this->texto, $chor, $ac, $s); //:array 
+        $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -1], $chor, $s); //:array 
         $funcao = array_shift($rotacionar);
         AnaliseController::$funcao(...$rotacionar); //positivo(chor) || increm(chor, s)
-        /*if($rotacionar[0] == 'positivo'){
-          AnaliseController::positivo($rotacionar[1]); //positivo($chor)
-        }else if($rotacionar[0] == 'increm'){
-          AnaliseController::increm($chor, $s);
-        }*/
       }else{
         $chor = substr($chor, 0, ($s));
         AnaliseController::positivo($chor);
@@ -81,7 +67,7 @@ class AnaliseController extends Controller
       AnaliseController::increm($chor, $s);
     }elseif(($ac == '/')&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
-      $rotacionar = AuxiliarController::bar($this->cifra, $chor, $ac, $s);
+      $rotacionar = AuxiliarController::bar($this->cifra, $this->naturais, $chor, $ac, $s);
       $funcao = array_shift($rotacionar);
       AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
     }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->cifra->composto == "nao")){
@@ -93,25 +79,25 @@ class AnaliseController extends Controller
       $this->parentesis = "fechado";
       AnaliseController::increm($chor, $s);
     }elseif(in_array($ac, $this->numeros)&&($this->cifra->dissonancia == "nao")&&($this->cifra->composto == "nao")){  //numeros de 2 a 9.
-      AuxiliarController::numOk($chor, $s);
+      AuxiliarController::numOk($this->cifra, $chor, $s);
       AnaliseController::increm($chor, $s);
     }elseif(($ac == "1")&&($this->cifra->dissonancia == "nao")&&($this->cifra->composto == "nao")){  //numero 1 para contruir 10 a 14
       AuxiliarController::compostoIncompleto($this->cifra);
       AnaliseController::increm($chor, $s);
     }elseif((in_array($ac, $this->intComposto))&&($this->cifra->composto == "sim")){  //numeros de 10 a 14
-      AuxiliarController::compostoCompleto($this->cifra);//continuar daqui
+      AuxiliarController::compostoCompleto($this->cifra);
       AnaliseController::increm($chor, $s);
     }elseif((($ac == 'd')&&($s == 1))||(($s == 2)&&($this->cifra->enarmonia == "sim"))){  //dim
-      eval(AuxiliarController::seDim($chor, $ac, $s));
+      $rotacionar = AuxiliarController::seDim($chor, $s);
+      AnaliseController::increm($rotacionar[0], $rotacionar[1]);
     }else{
       $this->parentesis = "fechado";
-      
       $this->cifra->composto = "nao";
       $this->cifra->enarmonia = "nao";
       $this->cifra->dissonancia = "nao";
       $this->cifra->sustOuBemol = "natural";
       $this->cifra->sustOuBemolInv = "naturalInv";
-      echo "<br/>$chor não é acorde!<br /><br />";
+      echo "<br/><br/><br/><br/><br/><br/>$chor não é acorde!";
     }
   }//space*/
 }//classe
