@@ -26,8 +26,9 @@ class AuxiliarController extends Controller
   }
 
   public static function seEouA($ea, $chor, $s){
-    //if(($texto->texto[$texto->ea -1] == "%")&&(!in_array($chor[2], (new AnaliseController)->naturais))&&($chor[1] != " ")&&($chor[2] != "%")){
-    if(($ea == "%")){
+    echo "ea: $ea,<br>chor: $chor,<br>chor 2: $chor[2],<br> s: $s";
+    if(($ea == "%")&&(!in_array($chor[2], (new AnaliseController)->naturais))&&($chor[2] != "%")){//&&($chor[1] != " ") 3º analise
+    //if(($ea == "%")){
       $chor = "*eanao*";//o if acima testa se a letra é início de frase.
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
     }else{
@@ -51,7 +52,6 @@ class AuxiliarController extends Controller
 
   public static function bar(CifraController $cifra, $naturais, $chor, $ac, $s)
   {
-    echo "passou barra";
     $s ++;
     $ac = $chor[$s];
     //echo gettype($ac);// fim de teste

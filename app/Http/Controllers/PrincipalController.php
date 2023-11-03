@@ -32,32 +32,41 @@ class PrincipalController extends Controller
 	public function loopTexto($texto){
 		echo $texto;
 		$l = strlen($texto);
+		
 		for($i=0; $i<$l; $i++){
 			$car = $texto[$i];
-			$this->posicao = $i;
-			
-			if(($car=="E")||($car == "A")){
-				$this->texto->setEA($i);
+			if($car == ' '){
+				$this->analise->statusAnalise = 'aberta';
+				continue;
 			}
-
-			if(in_array($car, $this->analise->naturais)){ 
-				if($this->cifra->possivelInversao == 'nao'){ 
-					$chor = substr($texto, $i, ($this->complChor+1)); 
-					echo "<br/><br/><br/><br/><br/><br/>$chor será analisado";
-					if($i >= $this->complChor){
-						$rotacionar = $this->auxiliar->endString($chor) ;
-						if($rotacionar == "positivo"){
-							$this->analise->pre_positivo($chor, $this->cifra);//antes de encaminhar positivo(), análise recebe objeto.
-						}else{
-							$this->analise->analisar1($this->cifra, $this->texto, $rotacionar);
-						}
-					}else{
-						$this->analise->analisar1($this->cifra, $this->texto, $chor);
+			if($this->analise->statusAnalise == 'aberta'){
+				
+					if(($car=="E")||($car == "A")){
+						$this->texto->setEA($i);
 					}
-				}else{ //possível inversão.
-					$this->cifra->defaultPossivelInversao();
-				}					
-			}////if ABCDEFG
+		
+					if(in_array($car, $this->analise->naturais)){ 
+						if($this->cifra->possivelInversao == 'nao'){ 
+							$chor = substr($texto, $i, ($this->complChor+1)); 
+							echo "<br/><br/><hr/>$chor será analisado";
+							if($i >= $this->complChor){
+								$rotacionar = $this->auxiliar->endString($chor) ;
+								if($rotacionar == "positivo"){
+									$this->analise->pre_positivo($chor, $this->cifra);//antes de encaminhar positivo(), análise recebe objeto.
+								}else{
+									$pularCaracteres = $this->analise->analisar1($this->cifra, $this->texto, $rotacionar);
+									$i = ($i + $pularCaracteres);
+								}
+							}else{
+								$pularCaracteres = $this->analise->analisar1($this->cifra, $this->texto, $chor);
+								$i = ($i + $pularCaracteres);
+							}
+						}else{ //possível inversão.
+							$this->cifra->defaultPossivelInversao();
+						}					
+					}////if ABCDEFG
+					$this->analise->statusAnalise = 'fechada';
+			}// se astatusAnalise aberta
 		}//for() principal que define o $chor
 	}//function loopTexto()
 

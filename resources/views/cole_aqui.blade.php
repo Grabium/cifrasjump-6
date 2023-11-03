@@ -10,6 +10,7 @@
 
 <form action="{{ route('recebetexto') }}" method='POST'>
 @csrf
+
   <button id="diminuir" class="btn btn-danger" onclick="intervalo('-')">-</button>
   <input name="semiTons" id="semiTons" value={{ $semiTons }} />
   <button id="aumentar" class="btn btn-danger" onclick='intervalo("+")'>+</button>

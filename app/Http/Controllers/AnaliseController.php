@@ -13,6 +13,7 @@ class AnaliseController extends Controller
   private $cifra;
   private $texto;
   public $parentesis = "fechado";
+  public $statusAnalise = 'aberta';
 
   function analisar1(CifraController $cifra, TextoController $texto, $chor)
   {
@@ -20,7 +21,7 @@ class AnaliseController extends Controller
     $this->texto = $texto;
     $s = 1; //índice do $chor a ser analizado
     $ac = $chor[1]; //analizar este caractere dentro do $chor
-    AnaliseController::space($chor, $ac, $s);
+    return AnaliseController::space($chor, $ac, $s);
   }
 
   function pre_positivo($chor, CifraController $cifra)
@@ -29,10 +30,11 @@ class AnaliseController extends Controller
     AnaliseController::positivo($chor);
   }
 
-  function positivo($chor){ 
+  function positivo($chor){
+    $this->statusAnalise = 'fechada';
     static $contaAcordes = 1;
     $positivo = $this->cifra->formataPositivo($chor);//retorna array
-    echo "<br/><br/><br/><br/><br/><br/> - $positivo[0] - $positivo[1] - é o $contaAcordes ° acorde";
+    echo "<br/> - $positivo[0] - $positivo[1] - é o $contaAcordes ° acorde";
     $contaAcordes ++;
     $this->cifra->setCifraDefault($positivo);
   }
@@ -40,9 +42,10 @@ class AnaliseController extends Controller
   function increm($chor, $s)
   { 
     echo '<br>'.$chor[$s];
-    echo '<br> str '.strlen($chor);
-    var_dump($this->cifra);
+    echo '<br> strlen '.strlen($chor);
     echo '<br>';
+    
+    //echo '<br>';
     $s ++;
     $ac = $chor[$s];
     
@@ -51,9 +54,10 @@ class AnaliseController extends Controller
 
   function space($chor, $ac, $s)
   {
+    var_dump($this->cifra);
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
       if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->invertido == 'nao')){
-        $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -1], $chor, $s); //:array 
+        $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -2], $chor, $s); //:array 
         $funcao = array_shift($rotacionar);
         AnaliseController::$funcao(...$rotacionar); //positivo(chor) || increm(chor, s)
       }else{
@@ -96,14 +100,17 @@ class AnaliseController extends Controller
       $rotacionar = AuxiliarController::seDim($chor, $s);
       AnaliseController::increm($rotacionar[0], $rotacionar[1]);
     }else{
+      $this->statusAnalise = 'fechada';
       $this->parentesis = "fechado";
       $this->cifra->composto = "nao";
       $this->cifra->enarmonia = "nao";
       $this->cifra->dissonancia = "nao";
       $this->cifra->sustOuBemol = "natural";
       $this->cifra->sustOuBemolInv = "naturalInv";
-      //$this->possivelInversao = 'nao';
-      echo "<br/><br/><br/><br/><br/><br/>$chor não é acorde!";
+      $this->cifra->possivelInversao = 'nao';
+      echo "<br/>$chor não é acorde!";
+      $pularCaracteres = strpos($chor, ' ');
+      return $pularCaracteres;
     }
   }//space*/
 }//classe

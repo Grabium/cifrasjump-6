@@ -11,7 +11,7 @@ class TextoController extends Controller
 
   public function setTexto(string $texto)
   {
-    $this->texto = str_replace(["\r\n","°","º"], [" %","dim","dim"], $texto);
+    $this->texto = str_replace(["\r\n","°","º"], [" % ","dim","dim"], $texto);
   }
 
   public function getTexto()
