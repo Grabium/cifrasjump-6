@@ -38,9 +38,14 @@ class AnaliseController extends Controller
   }
 
   function increm($chor, $s)
-  {   
+  { 
+    echo '<br>'.$chor[$s];
+    echo '<br> str '.strlen($chor);
+    var_dump($this->cifra);
+    echo '<br>';
     $s ++;
     $ac = $chor[$s];
+    
     AnaliseController::space($chor, $ac, $s);
   }
 
@@ -97,6 +102,7 @@ class AnaliseController extends Controller
       $this->cifra->dissonancia = "nao";
       $this->cifra->sustOuBemol = "natural";
       $this->cifra->sustOuBemolInv = "naturalInv";
+      //$this->possivelInversao = 'nao';
       echo "<br/><br/><br/><br/><br/><br/>$chor não é acorde!";
     }
   }//space*/

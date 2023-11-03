@@ -29,7 +29,7 @@ class CifraController extends Controller
 
   public function defaultPossivelInversao()
   {
-    $this->possivelInvercao = 'nao' ;
+    $this->possivelInversao = 'nao' ;
     $this->invertido = 'nao' ;
   }
 

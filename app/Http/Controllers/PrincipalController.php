@@ -45,10 +45,11 @@ class PrincipalController extends Controller
 					$chor = substr($texto, $i, ($this->complChor+1)); 
 					echo "<br/><br/><br/><br/><br/><br/>$chor será analisado";
 					if($i >= $this->complChor){
-						if(($this->auxiliar->endString($chor)) == "positivo"){
+						$rotacionar = $this->auxiliar->endString($chor) ;
+						if($rotacionar == "positivo"){
 							$this->analise->pre_positivo($chor, $this->cifra);//antes de encaminhar positivo(), análise recebe objeto.
 						}else{
-							$this->analise->analisar1($this->cifra, $this->texto, $chor);
+							$this->analise->analisar1($this->cifra, $this->texto, $rotacionar);
 						}
 					}else{
 						$this->analise->analisar1($this->cifra, $this->texto, $chor);

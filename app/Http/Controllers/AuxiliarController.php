@@ -56,7 +56,7 @@ class AuxiliarController extends Controller
     $ac = $chor[$s];
     //echo gettype($ac);// fim de teste
     if(in_array($ac, $naturais)){ //talvez esteja errado
-      $cifra->possivelInvercao = 'sim';
+      $cifra->possivelInversao = 'sim';
       $s ++;
       $ac = $chor[$s];
       if($ac == " "){
