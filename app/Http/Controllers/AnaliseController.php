@@ -31,6 +31,8 @@ class AnaliseController extends Controller
   }
 
   function positivo($chor){
+    echo '<br>';
+    var_dump($this->cifra);
     $this->statusAnalise = 'fechada';
     static $contaAcordes = 1;
     $positivo = $this->cifra->formataPositivo($chor);//retorna array
@@ -56,7 +58,10 @@ class AnaliseController extends Controller
   {
     var_dump($this->cifra);
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ // acho que perde o objeto na segunda vez que passa. ver fluxo.
-      if(($s == 1)&&(($chor[0] == "E")||($chor[0] == "A"))&&($this->cifra->invertido == 'nao')){
+      if(
+        (($chor[0] == "E")||($chor[0] == "A"))
+        &&(($s == 1)||(($s == 2)&&($chor[1] == 'm')))
+        &&($this->cifra->invertido == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -2], $chor, $s); //:array 
         $funcao = array_shift($rotacionar);
         AnaliseController::$funcao(...$rotacionar); //positivo(chor) || increm(chor, s)
@@ -68,7 +73,7 @@ class AnaliseController extends Controller
       AuxiliarController::processaSustenidoEBemol($this->cifra, $ac, $s);
       AnaliseController::increm($chor, $s);
     }elseif((($ac == 'm')&&($s == 1))&&($this->cifra->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->cifra->enarmonia == "sim")&&($this->cifra->composto == "nao"))){
-      $this->cifra->enarmonia = "nao";
+      //$this->cifra->enarmonia = "nao";
       $this->cifra->terca = "testada";
       AnaliseController::increm($chor, $s);
     }elseif((($ac == '+')||($ac == '-')&&($this->cifra->composto == "nao"))&&(($s == 1)||($this->cifra->dissonancia == "sim")&&($this->cifra->composto == "nao"))){

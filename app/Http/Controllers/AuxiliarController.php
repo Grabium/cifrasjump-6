@@ -27,15 +27,25 @@ class AuxiliarController extends Controller
 
   public static function seEouA($ea, $chor, $s){
     echo "ea: $ea,<br>chor: $chor,<br>chor 2: $chor[2],<br> s: $s";
-    if(($ea == "%")&&(!in_array($chor[2], (new AnaliseController)->naturais))&&($chor[2] != "%")){//&&($chor[1] != " ") 3º analise
+    if(($ea == "%")
+      &&(!in_array($chor[2], (new AnaliseController)->naturais)
+      &&($chor[2] != "%"))){//&&($chor[1] != " ") 3º analise
     //if(($ea == "%")){
       $chor = "*eanao*";//o if acima testa se a letra é início de frase.
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
+    }elseif(($ea == "%")
+           &&($chor[1] == 'm')
+           &&(!in_array($chor[3], (new AnaliseController)->naturais)
+           &&($chor[3] != "%"))){
+      $chor = "*eanao*";
+      return ['increm', $chor, $s];
     }else{
       $chor = substr($chor, 0, $s);
       return ['positivo', $chor]; // encaminha para AnaliseController::positivo($chor);
     }
+      
   }
+  
 
   public static function processaSustenidoEBemol(CifraController $cifra, $ac, $s)
   {

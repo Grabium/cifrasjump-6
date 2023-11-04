@@ -35,21 +35,22 @@ class CifraController extends Controller
 
 
   function formataPositivo($chor)
-    {
+  {
+    
     $strl = strlen($chor);
     $fundamental = $chor[0];
     $tipo = substr($chor, 1);
-    if($this->possivelInversao == 'nao'){
+    if($this->enarmonia == 'nao'){
       $fundamental = $chor[0];
       $tipo = substr($chor, 1);//restante do acorde natural
       //echo "<br />não acidente.";
-    }else{
+    }elseif($this->enarmonia == 'sim'){
       $fundamental = substr($chor, 0, 2);
       $tipo = substr($chor, 2);//restante do acorde enarmônico
       //echo "<br />sim acidente.";
     }
     return [$fundamental, $tipo];
-    }
+  }
 
   public function setCifraDefault($positivo){
     //$conversor->converter($positivo, $conversor);
