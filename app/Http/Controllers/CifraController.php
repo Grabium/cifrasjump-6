@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class CifraController extends Controller
 {
-  private int $semiTons;
+  private int $semiTons; 
   public $possivelInversao = 'nao';
   public $enarmonia = 'nao';
   public $invertido = 'nao' ;
@@ -16,6 +16,7 @@ class CifraController extends Controller
   public $tomDaInversao = [];//array();
   public $dissonancia = "nao";
   public $terca = "nao testada";
+  public $guardaCifras = [];
 
   public function setSemiTons(int $semiTons)
   {
@@ -33,7 +34,12 @@ class CifraController extends Controller
     $this->invertido = 'nao' ;
   }
 
+  public function guardarCifras($chor)
+  {
+    array_push($this->guardaCifras, $chor);
+  }
 
+  /*
   function formataPositivo($chor)
   {
     
@@ -50,10 +56,11 @@ class CifraController extends Controller
       //echo "<br />sim acidente.";
     }
     return [$fundamental, $tipo];
-  }
+  }*/
 
-  public function setCifraDefault($positivo){
+  public function setCifraDefault($chor){
     //$conversor->converter($positivo, $conversor);
+    $this->possivelInversao = 'nao';
     $this->enarmonia = 'nao';
     $this->composto = "nao";
     $this->invertido = "nao";
@@ -62,5 +69,7 @@ class CifraController extends Controller
     $this->tomDaInversao = [];//array();
     $this->dissonancia = "nao";
     $this->terca = "nao testada";
+    echo "<br>";
+    print_r($this->guardaCifras);
   }
 }

@@ -37,16 +37,18 @@ class PrincipalController extends Controller
 			$car = $texto[$i];
 			if($car == ' '){
 				$this->analise->statusAnalise = 'aberta';
+				echo "-----------abriu princial!------------";
 				continue;
 			}
 			if($this->analise->statusAnalise == 'aberta'){
-				
+				echo "-----------testado aberto : ..$car..";
 					if(($car=="E")||($car == "A")){
 						$this->texto->setEA($i);
 					}
 		
 					if(in_array($car, $this->analise->naturais)){ 
 						if($this->cifra->possivelInversao == 'nao'){ 
+							echo "<br><br><br>aqui:..$car..<br><br><br>";
 							$chor = substr($texto, $i, ($this->complChor+1)); 
 							echo "<br/><br/><hr/>$chor será analisado";
 							if($i >= $this->complChor){

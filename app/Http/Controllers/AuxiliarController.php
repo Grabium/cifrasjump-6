@@ -26,7 +26,7 @@ class AuxiliarController extends Controller
   }
 
   public static function seEouA($ea, $chor, $s){
-    echo "ea: $ea,<br>chor: $chor,<br>chor 2: $chor[2],<br> s: $s";
+    echo "<br><br>ea: $ea,<br>chor: $chor,<br>chor 2: $chor[2],<br> s: $s<br><br>";
     if((($ea == "%")||($ea == '.'))
       &&(!in_array($chor[2], (new AnaliseController)->naturais)
       &&($chor[2] != "%"))){//&&($chor[1] != " ") 3º analise
