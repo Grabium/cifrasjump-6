@@ -123,4 +123,23 @@ class AuxiliarController extends Controller
     }
     return [$chor, $s];
   }
+
+  public static function repor($chor, $s)
+  {
+    $s ++;
+    switch (substr($chor, $s, 2)) {
+      case ("_1"||"_2"||"_3"):
+        $chor = substr_replace($chor, '', $s, 2); //apaga o _1...
+        //$chor = str_replace([" "], ["  "], $chor); //aumenta um espaço.
+        echo "<br><br>subs: $chor<br><br>";
+        break;
+      case 1:
+        echo "i é igual a 1";
+        break;
+      case 2:
+        echo "i é igual a 2";
+        break;
+    }
+    return $chor;
+  }
 }

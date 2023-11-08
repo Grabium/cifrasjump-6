@@ -72,6 +72,7 @@ class AnaliseController extends Controller
       AnaliseController::increm($chor, $s);
     }elseif((($ac == '+')||($ac == '-')&&($this->cifra->composto == "nao"))&&(($s == 1)||($this->cifra->dissonancia == "sim")&&($this->cifra->composto == "nao"))){
       $this->cifra->dissonancia = "nao";
+      $chor = AuxiliarController::repor($chor, $s);//array()
       AnaliseController::increm($chor, $s);
     }elseif(($ac == '/')&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
@@ -87,7 +88,6 @@ class AnaliseController extends Controller
       }else{
         AnaliseController::negativo($chor);
       }
-      
     }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
       $this->parentesis = "fechado";
