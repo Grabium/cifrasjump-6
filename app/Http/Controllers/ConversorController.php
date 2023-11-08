@@ -9,7 +9,7 @@ class ConversorController extends Controller
   //private $cifra;
   private $tonalidadeSustenido = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
   private $tonalidadeBemol = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
-  private $semiTons;
+  private int $semiTons;
 
 
   public function setSemiTons(int $semiTons)
@@ -21,6 +21,7 @@ class ConversorController extends Controller
     //$this->cifra = $cifra;
     $fundamental = $cifra->guardaCifras[0];
     $tipo = $cifra->guardaCifras[1];
+    $cifra->guardaCifras = [];
 
     $key = 0;
     if($cifra->sustOuBemol == "sustenido"){

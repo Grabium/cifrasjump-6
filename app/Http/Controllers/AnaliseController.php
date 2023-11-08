@@ -31,13 +31,15 @@ class AnaliseController extends Controller
   }
 
   function positivo($chor){
-    static $contaAcordes = 1; //fim de teste
-    echo "$chor é o $contaAcordes ° acorde";
+            static $contaAcordes = 1; //fim de teste
+            echo "<br>$chor é o $contaAcordes ° acorde<br>";
+    
     $this->ordem = 'converter';
     $positivo = $this->cifra->formataPositivo($chor); //array[2]
     $this->cifra->guardarCifras($positivo);
-    $this->cifra->setCifraDefault($chor);
-    $contaAcordes ++;
+          
+          print_r($this->cifra->guardaCifras);
+          $contaAcordes ++;
   }
 
   function increm($chor, $s)
@@ -49,7 +51,7 @@ class AnaliseController extends Controller
 
   function space($chor, $ac, $s)
   {
-    var_dump($this->cifra);
+    echo "<br><br>";var_dump($this->cifra);echo "<br><br>";
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ 
       if(
         (($chor[0] == "E")||($chor[0] == "A"))
@@ -77,9 +79,10 @@ class AnaliseController extends Controller
       $funcao = array_shift($rotacionar);
       AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
     }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->cifra->composto == "nao")){
-      $rotacionar = AuxiliarController::parentesis($chor, $ac, $s);
-       $funcao = array_shift($rotacionar);
-       AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
+      $this->parentesis = "aberto";
+      $rotacionar = AuxiliarController::parentesis($this->cifra, $chor, $ac, $s);
+      $funcao = array_shift($rotacionar);
+      AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
     }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
       $this->parentesis = "fechado";

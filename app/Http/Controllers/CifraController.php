@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 
 class CifraController extends Controller
 {
-  private int $semiTons; 
+  
   public $possivelInversao = 'nao';
   public $enarmonia = 'nao';
   public $invertido = 'nao' ;
   public $composto = "nao";
   public $sustOuBemol = "natural";
   public $sustOuBemolInv = "naturalInv";
-  public $tomDaInversao = [];//array();
+  public $tomDaInversao = "";
   public $dissonancia = "nao";
   public $terca = "nao testada";
   public $guardaCifras = [];
@@ -50,18 +50,17 @@ class CifraController extends Controller
     return [$fundamental, $tipo];
   }
 
-  public function setCifraDefault($chor){
-    //$conversor->converter($positivo, $conversor);
+  public function setCifraDefault(){
     $this->possivelInversao = 'nao';
     $this->enarmonia = 'nao';
     $this->composto = "nao";
     $this->invertido = "nao";
     $this->sustOuBemol = "natural";
     $this->sustOuBemolInv = "naturalInv";
-    $this->tomDaInversao = [];//array();
+    $this->tomDaInversao = "";//array();
     $this->dissonancia = "nao";
     $this->terca = "nao testada";
     echo "<br>";
-    print_r($this->guardaCifras);
+    
   }
 }

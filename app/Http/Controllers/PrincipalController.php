@@ -49,7 +49,7 @@ class PrincipalController extends Controller
 					//if($this->cifra->possivelInversao == 'nao'){ //talvez apagar pq apos positivo, a leitura pula.
 						//echo "<br><br><br>aqui:..$car..<br><br><br>";
 						$chor = substr($texto, $i, ($this->complChor+1)); 
-						echo "<br/><br/><hr/>$chor será analisado";
+						echo "<br/><br/><hr/>$chor será analisado<br>";
 						//if($i >= $this->complChor){
 							$rotacionar = $this->auxiliar->endString($chor) ;
 							if($rotacionar == "positivo"){
@@ -72,6 +72,7 @@ class PrincipalController extends Controller
 					
 					if($this->analise->ordem == 'converter'){
 						$this->conversor->conversor($this->cifra);
+						$this->cifra->setCifraDefault();
 					}
 					
 				}////if ABCDEFG

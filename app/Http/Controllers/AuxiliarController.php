@@ -8,6 +8,8 @@ use App\Http\Controllers\AnaliseController;
 class AuxiliarController extends Controller
 {
   
+  
+  
   function endString($chor){
     $l = strlen($chor);
     if($l == 1){
@@ -79,16 +81,17 @@ class AuxiliarController extends Controller
           return ['space', $chor, $ac, $s];//AnaliseController::space($chor, $ac, $s);
         }
       }else{
-        return AuxiliarController::seNum($chor, $ac, $s);
+        return AuxiliarController::seNum($cifra, $chor, $ac, $s);
       }
     }else{
-      return AuxiliarController::seNum($chor, $ac, $s);
+      return AuxiliarController::seNum($cifra, $chor, $ac, $s);
     }//bloco do if(in_array...
   }//bar()
 
-  function seNum($chor, $ac, $s){
-    if((in_array($ac, $cifra->numeros))&&($cifra->dissonancia == "nao")){
-      return AuxiliarController::numOk($cifra->numeros, $chor, $s);
+  public static function seNum(CifraController $cifra, $chor, $ac, $s){
+    $numeros = ['2', '3', '4', '5', '6', '7', '9'];
+    if((in_array($ac, $numeros))&&($cifra->dissonancia == "nao")){
+      return AuxiliarController::numOk($cifra, $chor, $s);
     }else{
       return ['space', $chor, $ac, $s];;
     }
@@ -100,10 +103,9 @@ class AuxiliarController extends Controller
   }
 
   public static function parentesis(CifraController $cifra, $chor, $ac, $s){
-    $analise->parentesis = "aberto";
     $s ++;
     $ac = $chor[$s];
-    return AuxiliarController::seNum($chor, $ac, $s);
+    return AuxiliarController::seNum($cifra, $chor, $ac, $s);
   }
 
   public static function compostoIncompleto(CifraController $cifra){
