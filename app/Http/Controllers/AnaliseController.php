@@ -51,7 +51,7 @@ class AnaliseController extends Controller
 
   function space($chor, $ac, $s)
   {
-    echo "<br><br>";var_dump($this->cifra);echo "<br><br>";
+    echo "<br>ac = ..$ac..<br>";var_dump($this->cifra);echo "<br><br>";
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ 
       if(
         (($chor[0] == "E")||($chor[0] == "A"))
@@ -79,10 +79,15 @@ class AnaliseController extends Controller
       $funcao = array_shift($rotacionar);
       AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
     }elseif(($ac == '(')&&($this->parentesis == "fechado")&&($this->cifra->composto == "nao")){
+      $this->cifra->dissonancia = "nao";
       $this->parentesis = "aberto";
       $rotacionar = AuxiliarController::parentesis($this->cifra, $chor, $ac, $s);
-      $funcao = array_shift($rotacionar);
-      AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
+      if($funcao = array_shift($rotacionar)){
+        AnaliseController::$funcao(...$rotacionar); //space( chor, ac s ) || increm(chor, s)
+      }else{
+        AnaliseController::negativo($chor);
+      }
+      
     }elseif(($ac == ')')&&($this->parentesis == "aberto")&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
       $this->parentesis = "fechado";
@@ -100,17 +105,22 @@ class AnaliseController extends Controller
       $rotacionar = AuxiliarController::seDim($chor, $s);
       AnaliseController::increm($rotacionar[0], $rotacionar[1]);
     }else{
-      $this->ordem = 'fechada';
-      $this->parentesis = "fechado";
-      $this->cifra->composto = "nao";
-      $this->cifra->enarmonia = "nao";
-      $this->cifra->dissonancia = "nao";
-      $this->cifra->sustOuBemol = "natural";
-      $this->cifra->sustOuBemolInv = "naturalInv";
-      $this->cifra->possivelInversao = 'nao';
-      echo "<br/>$chor não é acorde!";
-      $pularCaracteres = strpos($chor, ' ');
-      return $pularCaracteres;
+      AnaliseController::negativo($chor);
     }
   }//space*/
+
+  function negativo($chor)
+  {
+    $this->ordem = 'fechada';
+    $this->parentesis = "fechado";
+    $this->cifra->composto = "nao";
+    $this->cifra->enarmonia = "nao";
+    $this->cifra->dissonancia = "nao";
+    $this->cifra->sustOuBemol = "natural";
+    $this->cifra->sustOuBemolInv = "naturalInv";
+    $this->cifra->possivelInversao = 'nao';
+    echo "<br/>$chor não é acorde!";
+    $pularCaracteres = strpos($chor, ' ');
+    return $pularCaracteres;
+  }
 }//classe
