@@ -18,45 +18,37 @@ class CifraController extends Controller
   public $terca = "nao testada";
   public $guardaCifras = [];
 
-  public function setSemiTons(int $semiTons)
-  {
-    $this->semiTons = $semiTons;
-  }
+  
   
   public function getSemiTons()
   {
     return $this->semiTons;
   }
 
+  
   public function defaultPossivelInversao()
   {
     $this->possivelInversao = 'nao' ;
     $this->invertido = 'nao' ;
   }
+  
 
-  public function guardarCifras($chor)
+  public function guardarCifras($positivo)
   {
-    array_push($this->guardaCifras, $chor);
+    $this->guardaCifras = [$positivo[0], $positivo[1]];
   }
 
-  /*
   function formataPositivo($chor)
   {
-    
-    $strl = strlen($chor);
-    $fundamental = $chor[0];
-    $tipo = substr($chor, 1);
     if($this->enarmonia == 'nao'){
       $fundamental = $chor[0];
       $tipo = substr($chor, 1);//restante do acorde natural
-      //echo "<br />não acidente.";
     }elseif($this->enarmonia == 'sim'){
       $fundamental = substr($chor, 0, 2);
       $tipo = substr($chor, 2);//restante do acorde enarmônico
-      //echo "<br />sim acidente.";
     }
     return [$fundamental, $tipo];
-  }*/
+  }
 
   public function setCifraDefault($chor){
     //$conversor->converter($positivo, $conversor);

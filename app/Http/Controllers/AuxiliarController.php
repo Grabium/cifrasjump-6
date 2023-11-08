@@ -7,13 +7,6 @@ use App\Http\Controllers\AnaliseController;
 
 class AuxiliarController extends Controller
 {
-  /*
-  private $analise;
-
-  function __construct()
-  {
-    $this->analise = new AnaliseController();
-  }*/
   
   function endString($chor){
     $l = strlen($chor);
@@ -26,7 +19,6 @@ class AuxiliarController extends Controller
   }
 
   public static function seEouA($ea, $chor, $s){
-    echo "<br><br>ea: $ea,<br>chor: $chor,<br>chor 2: $chor[2],<br> s: $s<br><br>";
     if((($ea == "%")||($ea == '.'))
       &&(!in_array($chor[2], (new AnaliseController)->naturais)
       &&($chor[2] != "%"))){//&&($chor[1] != " ") 3º analise
@@ -43,7 +35,6 @@ class AuxiliarController extends Controller
       $chor = substr($chor, 0, $s);
       return ['positivo', $chor]; // encaminha para AnaliseController::positivo($chor);
     }
-      
   }
   
 
@@ -73,7 +64,6 @@ class AuxiliarController extends Controller
         $cifra->tomDaInversao = $chor[$s-1];//array($s - 1, 1);
         $cifra->invertido = 'sim';
         $cifra->sustOuBemolInv = "naturalInv";
-        //ECHO "<br /><br /><br /><br /><br />Inversão sus ou bem de ".$chor." analiz:".$ac." : ".$cifra->sustOuBemolInv."<br />";
         return ['space', $chor, $ac, $s];//AnaliseController::space($chor, $ac, $s);
       }elseif(($ac == '#')||($ac == 'b')){
         if($ac == '#'){
@@ -81,7 +71,6 @@ class AuxiliarController extends Controller
         }elseif($ac == 'b'){
           $cifra->sustOuBemolInv = "bemolInv";
         }
-        //ECHO "<br /><br /><br /><br /><br />Inversão sus ou bem de ".$chor." analiz:".$ac." : ".$cifra->sustOuBemolInv."<br />";
         $s ++;
         $ac = $chor[$s];
         if($ac == " "){
@@ -119,7 +108,6 @@ class AuxiliarController extends Controller
 
   public static function compostoIncompleto(CifraController $cifra){
     $cifra->composto = "sim"; 
-    echo '<br><br><br><br>composto incompleto.';
   }
 
   public static function compostoCompleto(CifraController $cifra){
@@ -132,6 +120,5 @@ class AuxiliarController extends Controller
       $s = ($s+2);
     }
     return [$chor, $s];
-    //return "AnaliseController::increm('$chor', '$s');";
   }
 }

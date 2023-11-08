@@ -13,7 +13,7 @@ class AnaliseController extends Controller
   private $cifra;
   private $texto;
   public $parentesis = "fechado";
-  public $statusAnalise = 'aberta';
+  public $ordem = 'aberta';
 
   function analisar1(CifraController $cifra, TextoController $texto, $chor)
   {
@@ -31,26 +31,19 @@ class AnaliseController extends Controller
   }
 
   function positivo($chor){
-    /*echo '<br>';
-    var_dump($this->cifra);*/
-    $this->statusAnalise = 'fechada';
-    echo "-----------fechado no positivo!------------";
-    static $contaAcordes = 1;
+    static $contaAcordes = 1; //fim de teste
     echo "$chor é o $contaAcordes ° acorde";
-    $contaAcordes ++;
-    $this->cifra->guardarCifras($chor);
+    $this->ordem = 'converter';
+    $positivo = $this->cifra->formataPositivo($chor); //array[2]
+    $this->cifra->guardarCifras($positivo);
     $this->cifra->setCifraDefault($chor);
+    $contaAcordes ++;
   }
 
   function increm($chor, $s)
   { 
-    /*echo '<br>'.$chor[$s];
-    echo '<br> strlen '.strlen($chor);
-    echo '<br>';
-    echo '<br>';*/
     $s ++;
     $ac = $chor[$s];
-    
     AnaliseController::space($chor, $ac, $s);
   }
 
@@ -104,7 +97,7 @@ class AnaliseController extends Controller
       $rotacionar = AuxiliarController::seDim($chor, $s);
       AnaliseController::increm($rotacionar[0], $rotacionar[1]);
     }else{
-      $this->statusAnalise = 'fechada';
+      $this->ordem = 'fechada';
       $this->parentesis = "fechado";
       $this->cifra->composto = "nao";
       $this->cifra->enarmonia = "nao";
