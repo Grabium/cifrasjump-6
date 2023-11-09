@@ -32,7 +32,7 @@ class AnaliseController extends Controller
 
   function positivo($chor){
             static $contaAcordes = 1; //fim de teste
-            echo "<br>$chor é o $contaAcordes ° acorde<br>";
+            echo "<br><font color='red'>$chor é o $contaAcordes ° acorde</font><br>";
     
     $this->ordem = 'converter';
     $positivo = $this->cifra->formataPositivo($chor); //array[2]
@@ -70,9 +70,11 @@ class AnaliseController extends Controller
     }elseif((($ac == 'm')&&($s == 1))&&($this->cifra->composto == "nao")||(($ac == 'm')&&($s == 2)&&($this->cifra->enarmonia == "sim")&&($this->cifra->composto == "nao"))){
       $this->cifra->terca = "testada";
       AnaliseController::increm($chor, $s);
-    }elseif((($ac == '+')||($ac == '-')&&($this->cifra->composto == "nao"))&&(($s == 1)||($this->cifra->dissonancia == "sim")&&($this->cifra->composto == "nao"))){
+    }elseif((($ac == '+')||($ac == '-'))&&(($s == 1)||($this->cifra->dissonancia == "sim"))&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
-      $chor = AuxiliarController::repor($chor, $s);//array()
+      if($ac == '+'){
+        $chor = AuxiliarController::repor($chor, $s);//array()
+      }
       AnaliseController::increm($chor, $s);
     }elseif(($ac == '/')&&($this->cifra->composto == "nao")){
       $this->cifra->dissonancia = "nao";
@@ -104,6 +106,9 @@ class AnaliseController extends Controller
     }elseif((($ac == 'd')&&($s == 1))||(($s == 2)&&($this->cifra->enarmonia == "sim"))){  //dim
       $rotacionar = AuxiliarController::seDim($chor, $s);
       AnaliseController::increm($rotacionar[0], $rotacionar[1]);
+    }elseif(($ac == 's')&&(($s == 1)||($this->cifra->enarmonia == "sim"))){
+      $chor = AuxiliarController::seSuspenso($this->texto->susCli, $chor, $s); //array
+      AnaliseController::increm($chor[0], $chor[1]);
     }else{
       AnaliseController::negativo($chor);
     }
@@ -119,7 +124,7 @@ class AnaliseController extends Controller
     $this->cifra->sustOuBemol = "natural";
     $this->cifra->sustOuBemolInv = "naturalInv";
     $this->cifra->possivelInversao = 'nao';
-    echo "<br/>$chor não é acorde!";
+    echo "<br/><font color='red'>$chor não é acorde!.</font>";
     $pularCaracteres = strpos($chor, ' ');
     return $pularCaracteres;
   }

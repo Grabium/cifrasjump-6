@@ -114,6 +114,7 @@ class AuxiliarController extends Controller
 
   public static function compostoCompleto(CifraController $cifra){
     $cifra->composto = "nao";
+    $cifra->dissonancia = "sim";
   }
 
   public static function seDim($chor, $s){
@@ -124,21 +125,33 @@ class AuxiliarController extends Controller
     return [$chor, $s];
   }
 
+  public static function seSuspenso($susCli, $chor, $s)
+  {
+    /*$susCli
+    $sus = ['sus02_4', 'sus09_5', 'sus04_6', 'sus11_7'];
+    $substituir = ['sus2', 'sus9', 'sus4', 'sus11'];*/
+    $trecho = substr($chor, $s, 7);
+    //if(in_array($trecho, $sus)){
+      //$key = array_search($trecho, $sus);
+    if(array_search($trecho, $susCli)){
+      //$chor = substr_replace($chor, $substituir[$key], $s, 7);
+      $pular = array_keys($susCli, $trecho);
+      $chor = substr_replace($chor, $pular, $s, 7);
+      echo "<br><br>ok suspenso: $chor<br><br>";
+      $s = ($s + strlen($pular[0]));
+    }
+    echo "<br><br>suspenso: $chor<br><br>";
+    
+    return [$chor, $s];//correr o $s até o [-1] de $trecho.
+  }
+
   public static function repor($chor, $s)
   {
     $s ++;
-    switch (substr($chor, $s, 2)) {
-      case ("_1"||"_2"||"_3"):
-        $chor = substr_replace($chor, '', $s, 2); //apaga o _1...
-        //$chor = str_replace([" "], ["  "], $chor); //aumenta um espaço.
-        echo "<br><br>subs: $chor<br><br>";
-        break;
-      case 1:
-        echo "i é igual a 1";
-        break;
-      case 2:
-        echo "i é igual a 2";
-        break;
+    $trecho = substr($chor, $s, 2);
+    if(($trecho == ("_1"))||($trecho == ("_2"))||($trecho == ("_3"))){
+      $chor = substr_replace($chor, '', $s, 2);
+      echo "<br><br>subs: $chor<br><br>";
     }
     return $chor;
   }
