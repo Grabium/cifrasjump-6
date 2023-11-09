@@ -10,36 +10,58 @@ class TextoController extends Controller
   public int $ea; //onde foi encontrado um "E" ou "A".
   
   //   < entrada_do_cliente > => < novo_valor >
-  public $agenteCli = [ "\r\n" => ' % ',
-                        '°' => 'dim',
-                        'º' => 'dim'];
+  public $agenteCli = [ "\r\n" => ' % '];
+
+  //diminuto
+  public $dimCli = ['°'    => '|_d000',
+                    'º'    => '|_d001',
+                    'dim'  => '|_d002'];                        
   
   //maj
-  public $majCli = ['Maj7'=>'7+_1', 
-                    'maj7'=>'7+_2',
-                    '7M'=>'7+_3'];
+  public $majCli = ['Maj7' => '|_m000', 
+                    'maj7' => '|_m001',
+                    '7M'   => '|_m002'];
   
   //suspenso
-  public $susCli = ['sus2'=>'sus02_4',
-                    'sus9'=>'sus09_5',
-                    'sus4'=>'sus04_6',
-                    'sus11'=>'sus11_7'];
+  public $susCli = ['sus2'  => '|_s000',
+                    'sus9'  => '|_s001',
+                    'sus4'  => '|_s002',
+                    'sus11' => '|_s003'];
+
+  //adicionado
+  public $addCli = ['add4'   => '|_a000',
+                    'add11'  => '|_a001',
+                    'add2'   => '|_a002',
+                    'add9'   => '|_a003'];
+
+  //aumentado (adicionado com outra grafia)
+  public $augCli = ['aug2'   => '|_g000',
+                    'aug9'   => '|_g001',
+                    'aug4'   => '|_g002',
+                    'sus11'  => '|_g003'];
+  
 
   //recebem as chaves que serão formatadas
   public $agenteCliKeys = [];
-  public $majCliKeys = [];
-  public $susCliKeys = [];
+  public $dimCliKeys    = [];
+  public $majCliKeys    = [];
+  public $susCliKeys    = [];
+  
 
   public function setTexto(string $texto)
   {
     
-    $this->agenteCliKeys = array_keys($this->agenteCli);
-    $this->majCliKeys = array_keys($this->majCli);
-    $this->susCliKeys = array_keys($this->susCli);
+
     
-    //$this->texto = str_replace(  $texto); 
-    $this->texto = str_replace( array_merge($this->agenteCliKeys, $this->majCliKeys, $this->susCliKeys), 
-                                array_merge($this->agenteCli, $this->majCli, $this->susCli),
+    $this->agenteCliKeys = array_keys($this->agenteCli);
+    $this->dimCliKeys    = array_keys($this->dimCli);
+    $this->majCliKeys    = array_keys($this->majCli);
+    $this->susCliKeys    = array_keys($this->susCli);
+    
+    
+    //$this->texto = str_replace(array_de_chaves, array_de_valores,  $texto); ATENÇÃO À ORDEM!
+    $this->texto = str_replace( array_merge($this->agenteCliKeys, $this->dimCliKeys, $this->majCliKeys, $this->susCliKeys), 
+                                array_merge($this->agenteCli, $this->dimCli, $this->majCli, $this->susCli),
                                 $texto); 
   }
 

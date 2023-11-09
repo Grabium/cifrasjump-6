@@ -11,6 +11,7 @@ class AuxiliarController extends Controller
   
   
   function endString($chor){
+    echo "\n";echo __METHOD__;echo "\n";
     $l = strlen($chor);
     if($l == 1){
       return "positivo"; //último caractere dentro de naturais. É um acorde. 
@@ -21,6 +22,7 @@ class AuxiliarController extends Controller
   }
 
   public static function seEouA($ea, $chor, $s){
+    echo "\n";echo __METHOD__;echo "\n";
     if((($ea == "%")||($ea == '.'))
       &&(!in_array($chor[2], (new AnaliseController)->naturais)
       &&($chor[2] != "%"))){//&&($chor[1] != " ") 3º analise
@@ -42,6 +44,7 @@ class AuxiliarController extends Controller
 
   public static function processaSustenidoEBemol(CifraController $cifra, $ac, $s)
   {
+    echo "\n";echo __METHOD__;echo "\n";
     if($s == 1){
       $cifra->enarmonia = "sim";
       if($ac == '#'){
@@ -55,9 +58,9 @@ class AuxiliarController extends Controller
 
   public static function bar(CifraController $cifra, $naturais, $chor, $ac, $s)
   {
+    echo "\n";echo __METHOD__;echo "\n";
     $s ++;
     $ac = $chor[$s];
-    //echo gettype($ac);// fim de teste
     if(in_array($ac, $naturais)){ //talvez esteja errado
       $cifra->possivelInversao = 'sim';
       $s ++;
@@ -89,6 +92,7 @@ class AuxiliarController extends Controller
   }//bar()
 
   public static function seNum(CifraController $cifra, $chor, $ac, $s){
+    echo "\n";echo __METHOD__;echo "\n";
     $numeros = ['2', '3', '4', '5', '6', '7', '9'];
     if((in_array($ac, $numeros))&&($cifra->dissonancia == "nao")){
       return AuxiliarController::numOk($cifra, $chor, $s);
@@ -98,26 +102,32 @@ class AuxiliarController extends Controller
   }
 
   public static function numOk(CifraController $cifra, $chor, $s){
+    echo "\n";echo __METHOD__;echo "\n";
       $cifra->dissonancia = "sim";
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
   }
 
   public static function parentesis(CifraController $cifra, $chor, $ac, $s){
+    echo "\n";echo __METHOD__;echo "\n";
     $s ++;
     $ac = $chor[$s];
     return AuxiliarController::seNum($cifra, $chor, $ac, $s);
   }
 
-  public static function compostoIncompleto(CifraController $cifra){
+  public static function compostoIncompleto(CifraController $cifra)
+  {
+    echo "\n";echo __METHOD__;echo "\n";
     $cifra->composto = "sim"; 
   }
 
   public static function compostoCompleto(CifraController $cifra){
+    echo "\n";echo __METHOD__;echo "\n";
     $cifra->composto = "nao";
     $cifra->dissonancia = "sim";
   }
 
   public static function seDim($chor, $s){
+    echo "\n";echo __METHOD__;echo "\n";
     $dim = substr($chor, $s, 3); //espera receber a string ["d","i","m"]
     if($dim == "dim"){
       $s = ($s+2);
@@ -125,28 +135,27 @@ class AuxiliarController extends Controller
     return [$chor, $s];
   }
 
-  public static function seSuspenso($susCli, $chor, $s)
+  
+
+  public static function seMarcado($arr, $chor, $s)
   {
-    /*$susCli
-    $sus = ['sus02_4', 'sus09_5', 'sus04_6', 'sus11_7'];
-    $substituir = ['sus2', 'sus9', 'sus4', 'sus11'];*/
-    $trecho = substr($chor, $s, 7);
-    //if(in_array($trecho, $sus)){
-      //$key = array_search($trecho, $sus);
-    if(array_search($trecho, $susCli)){
-      //$chor = substr_replace($chor, $substituir[$key], $s, 7);
-      $pular = array_keys($susCli, $trecho);
-      $chor = substr_replace($chor, $pular, $s, 7);
+    echo "\n";echo __METHOD__;echo "\n";
+    $trecho = substr($chor, $s, 6);
+    if(array_search($trecho, $arr)){
+      $pular = array_keys($arr, $trecho);
+      $chor = substr_replace($chor, $pular, $s, 6);
       echo "<br><br>ok suspenso: $chor<br><br>";
-      $s = ($s + strlen($pular[0]));
+      $s = ($s + strlen($pular[0]) -1);
+      echo "<br>s:..$s..e chor[0]:..$chor[0]..<br>";
     }
     echo "<br><br>suspenso: $chor<br><br>";
-    
+
     return [$chor, $s];//correr o $s até o [-1] de $trecho.
   }
 
   public static function repor($chor, $s)
   {
+    echo "\n";echo __METHOD__;echo "\n";
     $s ++;
     $trecho = substr($chor, $s, 2);
     if(($trecho == ("_1"))||($trecho == ("_2"))||($trecho == ("_3"))){
