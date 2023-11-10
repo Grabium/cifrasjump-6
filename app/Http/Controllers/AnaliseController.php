@@ -53,10 +53,7 @@ class AnaliseController extends Controller
   {
     echo "<br>ac = ..$ac..<br>s = $s<br>";var_dump($this->cifra);echo "<br><br>";
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ 
-      if(
-        (($chor[0] == "E")||($chor[0] == "A"))
-        &&(($s == 1)||(($s == 2)&&($chor[1] == 'm')))
-        &&($this->cifra->invertido == 'nao')){
+      if((($chor[0] == "E")||($chor[0] == "A"))&&(($s == 1)||(($s == 2)&&($chor[1] == 'm')))&&($this->cifra->invertido == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -2], $chor, $s); //:array 
         $funcao = array_shift($rotacionar);
         AnaliseController::$funcao(...$rotacionar); //positivo(chor) || increm(chor, s)
@@ -103,24 +100,20 @@ class AnaliseController extends Controller
     }elseif((in_array($ac, $this->intComposto))&&($this->cifra->composto == "sim")){  //numeros de 10 a 14
       AuxiliarController::compostoCompleto($this->cifra);
       AnaliseController::increm($chor, $s);
-    /*}elseif((($ac == 'd')&&($s == 1)&&($this->cifra->enarmonia == "nao"))||(($ac == 'd')&&($s == 2)&&($this->cifra->enarmonia == "sim"))){  //dim
-      $rotacionar = AuxiliarController::seDim($chor, $s);
-      AnaliseController::increm($rotacionar[0], $rotacionar[1]);*/
-    }elseif(
-      ($ac == '|')
-      and($chor[$s+2] == 'd')
-      and((($s == 1)&&($this->cifra->enarmonia == "nao"))
-      ||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
-      echo "teste dim: $s e $ac";
+    }elseif(($ac == '|')&&($chor[$s+2] == 'd')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
       $chor = AuxiliarController::seMarcado($this->texto->dimCli, $chor, $s); //array
       AnaliseController::increm($chor[0], $chor[1]);
-    }elseif(($ac == '|')and($chor[$s+2] == 's')and((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
-      //echo "teste suspenso: $s e $ac";
+    }elseif(($ac == '|')&&($chor[$s+2] == 's')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
       $chor = AuxiliarController::seMarcado($this->texto->susCli, $chor, $s); //array
       AnaliseController::increm($chor[0], $chor[1]);
-    }elseif((($ac == '|')and($chor[$s+2] == 'm'))||(($s == 1)||($this->cifra->dissonancia == "sim"))&&($this->cifra->composto == "nao")){
-      echo "teste maj: $s e $ac";
+    }elseif(($ac == '|')&&($chor[$s+2] == 'm')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada")))&&(($chor[$s+5] == '2')||($this->cifra->terca == "testada")))){ //ou impede menores com maj, mas aprova Cm7M
       $chor = AuxiliarController::seMarcado($this->texto->majCli, $chor, $s); //array
+      AnaliseController::increm($chor[0], $chor[1]);
+    }elseif(($ac == '|')&&($chor[$s+2] == 'g')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))))){
+      $chor = AuxiliarController::seMarcado($this->texto->augCli, $chor, $s); //array
+      AnaliseController::increm($chor[0], $chor[1]);
+    }elseif(($ac == '|')&&($chor[$s+2] == 'a')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))))){
+      $chor = AuxiliarController::seMarcado($this->texto->addCli, $chor, $s); //array
       AnaliseController::increm($chor[0], $chor[1]);
     }else{
       AnaliseController::negativo($chor);

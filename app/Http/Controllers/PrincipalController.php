@@ -20,7 +20,6 @@ class PrincipalController extends Controller
 		$this->analise = new AnaliseController();
 		$this->auxiliar = new AuxiliarController();
 		$this->conversor = new ConversorController();
-			
 	}
 	
 	public function recebetexto(Request $request){

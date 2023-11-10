@@ -140,6 +140,7 @@ class AuxiliarController extends Controller
   public static function seMarcado($arr, $chor, $s)
   {
     echo "\n";echo __METHOD__;echo "\n";
+    var_dump($arr);
     $trecho = substr($chor, $s, 6);
     if(array_search($trecho, $arr)){
       $pular = array_keys($arr, $trecho);
