@@ -106,7 +106,10 @@ class AnaliseController extends Controller
     }elseif(($ac == '|')&&($chor[$s+2] == 's')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
       $chor = AuxiliarController::seMarcado($this->texto->susCli, $chor, $s); //array
       AnaliseController::increm($chor[0], $chor[1]);
-    }elseif(($ac == '|')&&($chor[$s+2] == 'm')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada")))&&(($chor[$s+5] == '2')||($this->cifra->terca == "testada")))){ //ou impede menores com maj, mas aprova Cm7M
+    }elseif(($ac == '|')
+            &&($chor[$s+2] == 'm')
+            &&(($this->cifra->terca == "nao testada")||(($this->cifra->terca == "testada")&&($chor[$s+5] == '2')))
+            &&(($s == 1)||($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))){ //ou impede menores com maj, mas aprova Cm7M
       $chor = AuxiliarController::seMarcado($this->texto->majCli, $chor, $s); //array
       AnaliseController::increm($chor[0], $chor[1]);
     }elseif(($ac == '|')&&($chor[$s+2] == 'g')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))))){
