@@ -31,15 +31,17 @@ class AnaliseController extends Controller
   }
 
   function positivo($chor){
-            static $contaAcordes = 1; //fim de teste
-            echo "<br><font color='red'>$chor é o $contaAcordes ° acorde</font><br>";
+    //echo "<br><br><br><br>";
+    //print_r($this->cifra->guardaCifras);
+            //static $contaAcordes = 1; //fim de teste
+            //echo "<br><font color='red'>$chor é o $contaAcordes ° acorde</font><br>";
     
     $this->ordem = 'converter';
     $positivo = $this->cifra->formataPositivo($chor); //array[2]
     $this->cifra->guardarCifras($positivo);
           
-          print_r($this->cifra->guardaCifras);
-          $contaAcordes ++;
+          //print_r($this->cifra->guardaCifras);
+          //$contaAcordes ++;
   }
 
   function increm($chor, $s)
@@ -51,7 +53,7 @@ class AnaliseController extends Controller
 
   function space($chor, $ac, $s)
   {
-    echo "<br>ac = ..$ac..<br>s = $s<br>";var_dump($this->cifra);echo "<br><br>";
+    //echo "<br>ac = ..$ac..<br>s = $s<br>";var_dump($this->cifra);echo "<br><br>";
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ 
       if((($chor[0] == "E")||($chor[0] == "A"))&&(($s == 1)||(($s == 2)&&($chor[1] == 'm')))&&($this->cifra->invertido == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -2], $chor, $s); //:array 
@@ -133,7 +135,7 @@ class AnaliseController extends Controller
     $this->cifra->sustOuBemol = "natural";
     $this->cifra->sustOuBemolInv = "naturalInv";
     $this->cifra->possivelInversao = 'nao';
-    echo "<br/><font color='red'>$chor não é acorde!.</font>";
+    //echo "<br/><font color='red'>$chor não é acorde!.</font>";
     $pularCaracteres = strpos($chor, ' ');
     return $pularCaracteres;
   }

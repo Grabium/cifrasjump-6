@@ -9,20 +9,21 @@ class AuxiliarController extends Controller
 {
   
   
-  
+  /*
   function endString($chor){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $l = strlen($chor);
-    if($l == 1){
+    $chor = $chor . " ";
+    if($l == 2){
       return "positivo"; //último caractere dentro de naturais. É um acorde. 
     }else{
-      $chor = $chor . " ";
       return $chor;
     }
   }
-
+  */
+  
   public static function seEouA($ea, $chor, $s){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     if((($ea == "%")||($ea == '.'))
       &&(!in_array($chor[2], (new AnaliseController)->naturais)
       &&($chor[2] != "%"))){//&&($chor[1] != " ") 3º analise
@@ -44,7 +45,7 @@ class AuxiliarController extends Controller
 
   public static function processaSustenidoEBemol(CifraController $cifra, $ac, $s)
   {
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     if($s == 1){
       $cifra->enarmonia = "sim";
       if($ac == '#'){
@@ -58,7 +59,7 @@ class AuxiliarController extends Controller
 
   public static function bar(CifraController $cifra, $naturais, $chor, $ac, $s)
   {
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $s ++;
     $ac = $chor[$s];
     if(in_array($ac, $naturais)){ //talvez esteja errado
@@ -92,7 +93,7 @@ class AuxiliarController extends Controller
   }//bar()
 
   public static function seNum(CifraController $cifra, $chor, $ac, $s){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $numeros = ['2', '3', '4', '5', '6', '7', '9'];
     if((in_array($ac, $numeros))&&($cifra->dissonancia == "nao")){
       return AuxiliarController::numOk($cifra, $chor, $s);
@@ -102,13 +103,13 @@ class AuxiliarController extends Controller
   }
 
   public static function numOk(CifraController $cifra, $chor, $s){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
       $cifra->dissonancia = "sim";
       return ['increm', $chor, $s]; //AnaliseController::increm($chor, $s);
   }
 
   public static function parentesis(CifraController $cifra, $chor, $ac, $s){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $s ++;
     $ac = $chor[$s];
     return AuxiliarController::seNum($cifra, $chor, $ac, $s);
@@ -116,18 +117,18 @@ class AuxiliarController extends Controller
 
   public static function compostoIncompleto(CifraController $cifra)
   {
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $cifra->composto = "sim"; 
   }
 
   public static function compostoCompleto(CifraController $cifra){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $cifra->composto = "nao";
     $cifra->dissonancia = "sim";
   }
 
   public static function seDim($chor, $s){
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $dim = substr($chor, $s, 3); //espera receber a string ["d","i","m"]
     if($dim == "dim"){
       $s = ($s+2);
@@ -139,29 +140,29 @@ class AuxiliarController extends Controller
 
   public static function seMarcado($arr, $chor, $s)
   {
-    echo "\n";echo __METHOD__;echo "\n";
-    var_dump($arr);
+    //echo "\n";//echo __METHOD__;//echo "\n";
+    //var_dump($arr);
     $trecho = substr($chor, $s, 6);
     if(array_search($trecho, $arr)){
       $pular = array_keys($arr, $trecho);
       $chor = substr_replace($chor, $pular, $s, 6);
-      echo "<br><br>ok suspenso: $chor<br><br>";
+      //echo "<br><br>ok suspenso: $chor<br><br>";
       $s = ($s + strlen($pular[0]) -1);
-      echo "<br>s:..$s..e chor[0]:..$chor[0]..<br>";
+      //echo "<br>s:..$s..e chor[0]:..$chor[0]..<br>";
     }
-    echo "<br><br>suspenso: $chor<br><br>";
+    //echo "<br><br>suspenso: $chor<br><br>";
 
     return [$chor, $s];//correr o $s até o [-1] de $trecho.
   }
 
   public static function repor($chor, $s)
   {
-    echo "\n";echo __METHOD__;echo "\n";
+    //echo "\n";//echo __METHOD__;//echo "\n";
     $s ++;
     $trecho = substr($chor, $s, 2);
     if(($trecho == ("_1"))||($trecho == ("_2"))||($trecho == ("_3"))){
       $chor = substr_replace($chor, '', $s, 2);
-      echo "<br><br>subs: $chor<br><br>";
+      //echo "<br><br>subs: $chor<br><br>";
     }
     return $chor;
   }

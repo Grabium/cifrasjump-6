@@ -16,7 +16,7 @@ class CifraController extends Controller
   public $tomDaInversao = "";
   public $dissonancia = "nao";
   public $terca = "nao testada";
-  public $guardaCifras = [];
+  public $guardaCifras = []; //é usada como array em conversor()
 
   
   
@@ -35,9 +35,11 @@ class CifraController extends Controller
 
   public function guardarCifras($positivo)
   {
-    $this->guardaCifras = [$positivo[0], $positivo[1]];
+    $this->guardaCifras = $positivo;
+    //$this->guardaCifras = [$positivo[0], $positivo[1]];
   }
 
+  
   function formataPositivo($chor)
   {
     if($this->enarmonia == 'nao'){
@@ -47,8 +49,10 @@ class CifraController extends Controller
       $fundamental = substr($chor, 0, 2);
       $tipo = substr($chor, 2);//restante do acorde enarmônico
     }
+    $tipo = $tipo." ";
     return [$fundamental, $tipo];
   }
+  
 
   public function setCifraDefault(){
     $this->possivelInversao = 'nao';
@@ -60,7 +64,7 @@ class CifraController extends Controller
     $this->tomDaInversao = "";//array();
     $this->dissonancia = "nao";
     $this->terca = "nao testada";
-    echo "<br>";
+    //echo "<br>";
     
   }
 }

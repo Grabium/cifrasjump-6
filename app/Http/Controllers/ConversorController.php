@@ -17,9 +17,12 @@ class ConversorController extends Controller
   }
   
   public function conversor(CifraController $cifra){
-    $fundamental = $cifra->guardaCifras[0];
-    $tipo = $cifra->guardaCifras[1];
-    $cifra->guardaCifras = [];
+    //echo "<br><br><br><br>";
+    //dd($cifra->guardaCifras); //recebe o acorde sem a marcação
+    $fundamental = $cifra->guardaCifras[0];// 
+    $tipo = $cifra->guardaCifras[1];// até aqui ainda é string
+    //echo "<br>tipo: .$tipo.";
+    //$cifra->guardaCifras = "string vazia"; //instaura array, mesmo não sendo uma na classe. E limpa a array
 
     $key = 0;
     if($cifra->sustOuBemol == "sustenido"){
@@ -41,7 +44,8 @@ class ConversorController extends Controller
       $tipo = str_replace($tomInv, $nInv, $tipo);
     }
     $nChord = $n . $tipo;
-    echo "<br /><font color='red'>Convertido para: $nChord</font><br />";
+    echo "<br /><font color='red'>Convertido para: $nChord</font>";
+    return $nChord;
   }
 
   function calcularConv($rst){
