@@ -10,8 +10,7 @@ class TextoController extends Controller
   public int $ea; //onde foi encontrado um "E" ou "A".
   private $locaLen = []; //guarda local $i e tamanho de chor a ser analisado
   private string $textoConvertido = '';
-  private int $lt;
-  
+    
   //   < entrada_do_cliente > => < novo_valor >
   public $agenteCli = [ "\r\n" => ' % '];
 
@@ -69,10 +68,7 @@ class TextoController extends Controller
       array_keys(   $this->augCli)
     );
 
-    
-    //$this->texto = str_replace(array_de_chaves, array_de_valores,  $texto); ATENÇÃO À ORDEM!
     $this->texto = str_replace( $original, $nova, $texto); 
-    $this->lt = strlen($this->texto);
   }
 
   public function getTexto()
@@ -85,49 +81,26 @@ class TextoController extends Controller
     $this->ea = $i;
   }
 
-  public function setLocalen($local, $len)
+  public function concatConvertido(array $par)
   {
-    $this->locaLen[0] = $local;
-    $this->locaLen[1] = $len;
+    $caractere = $this->texto[$par[0]];
+    $nChord = $par[1];
+    $espaco = $par[2];
+    $this->textoConvertido = $this->textoConvertido . $espaco . $nChord ;
+    //echo "<br><strong>concatena convertido:..$this->textoConvertido..</strong>";
   }
 
-  public function getLocalen()
+  public function concatITexto(array $par)
   {
-    return $this->locaLen;
+    $caractere = $this->texto[$par[0]];
+    $espaco = $par[1];
+    $this->textoConvertido = $this->textoConvertido . $espaco . $caractere ;
+    //echo "<br><strong>concatena i de texto:..$this->textoConvertido..</strong>";
   }
 
-  public function converterTexto($nChord)
+  public function getTextoConvertido()
   {
-    //teste até o echo
-    $a = (string)$this->locaLen[0];
-    $b = (string)$this->locaLen[1];
-    //echo "<br>texto: ..$this->texto..<br>nChord: ..$nChord..<br>local: ..$a..<br>quantos apagar: ..$b..";
-
-    
-    /*
-    $this->texto = substr_replace( 
-      $this->texto,
-      $nChord,
-      $this->locaLen[0],
-      $this->locaLen[1]
-    );*/
-
-    //$tCut = substr($texto, $this->locaLen[0], ($this->complChor+1))
-    
-    $quantosApagar = ($this->lt - $this->locaLen[0]);
-    echo "<br>texto: ..$this->texto..<br>nChord: ..$nChord..<br>local: ..$a..<br>quantos apagar: ..$quantosApagar..";
-    
-    $tCut = substr_replace( 
-      $this->texto,
-      $nChord,
-      $this->locaLen[0],
-      $quantosApagar
-    );
-    
-    $this->textoConvertido = $tCut;
-    
     return $this->textoConvertido;
   }
-
   
 }

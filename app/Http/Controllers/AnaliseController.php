@@ -21,7 +21,8 @@ class AnaliseController extends Controller
     $this->texto = $texto;
     $s = 1; //índice do $chor a ser analizado
     $ac = $chor[1]; //analizar este caractere dentro do $chor
-    return AnaliseController::space($chor, $ac, $s);
+    //return AnaliseController::space($chor, $ac, $s);
+    AnaliseController::space($chor, $ac, $s);
   }
 
   function pre_positivo($chor, CifraController $cifra)
@@ -121,6 +122,7 @@ class AnaliseController extends Controller
       $chor = AuxiliarController::seMarcado($this->texto->addCli, $chor, $s); //array
       AnaliseController::increm($chor[0], $chor[1]);
     }else{
+      //return AnaliseController::negativo($chor);
       AnaliseController::negativo($chor);
     }
   }//space*/
@@ -136,7 +138,7 @@ class AnaliseController extends Controller
     $this->cifra->sustOuBemolInv = "naturalInv";
     $this->cifra->possivelInversao = 'nao';
     //echo "<br/><font color='red'>$chor não é acorde!.</font>";
-    $pularCaracteres = strpos($chor, ' ');
-    return $pularCaracteres;
+    //$pularCaracteres = strpos($chor, ' ');
+    //return $pularCaracteres;
   }
 }//classe
