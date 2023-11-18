@@ -17,14 +17,10 @@ class ConversorController extends Controller
   }
   
   public function conversor(CifraController $cifra){
-    //echo "<br><br><br><br>";
-    //dd($cifra->guardaCifras); //recebe o acorde sem a marcação
-    $fundamental = $cifra->guardaCifras[0];// 
-    $tipo = $cifra->guardaCifras[1];// até aqui ainda é string
-    //echo "<br>tipo: .$tipo.";
-    //$cifra->guardaCifras = "string vazia"; //instaura array, mesmo não sendo uma na classe. E limpa a array
+    $fundamental = $cifra->guardaCifras[0];//parte que será convertida
+    $tipo = $cifra->guardaCifras[1];
 
-    $key = 0;
+    $key = 0;//auxiliar
     if($cifra->sustOuBemol == "sustenido"){
       $key = array_search($fundamental, $this->tonalidadeSustenido);//retorna o número da fundamental caso sustenido.
     }elseif(($cifra->sustOuBemol == "bemol")||($cifra->sustOuBemol == "natural")){

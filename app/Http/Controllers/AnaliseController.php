@@ -14,6 +14,7 @@ class AnaliseController extends Controller
   private $texto;
   public $parentesis = "fechado";
   public $ordem = 'aberta';
+  public int $pularCaracteres = 0;
 
   function analisar1(CifraController $cifra, TextoController $texto, $chor)
   {
@@ -21,28 +22,23 @@ class AnaliseController extends Controller
     $this->texto = $texto;
     $s = 1; //índice do $chor a ser analizado
     $ac = $chor[1]; //analizar este caractere dentro do $chor
-    //return AnaliseController::space($chor, $ac, $s);
     AnaliseController::space($chor, $ac, $s);
   }
 
-  function pre_positivo($chor, CifraController $cifra)
+  function pre_positivo($chor, CifraController $cifra, TextoController $texto)
   {
     $this->cifra = $cifra;
     AnaliseController::positivo($chor);
   }
 
-  function positivo($chor){
-    //echo "<br><br><br><br>";
-    //print_r($this->cifra->guardaCifras);
-            //static $contaAcordes = 1; //fim de teste
-            //echo "<br><font color='red'>$chor é o $contaAcordes ° acorde</font><br>";
-    
+  function positivo($chor)
+  {
     $this->ordem = 'converter';
     $positivo = $this->cifra->formataPositivo($chor); //array[2]
     $this->cifra->guardarCifras($positivo);
-          
-          //print_r($this->cifra->guardaCifras);
-          //$contaAcordes ++;
+    if($this->pularCaracteres == 0){
+      $this->pularCaracteres = (strpos(implode($positivo), ' ')-1);
+    }
   }
 
   function increm($chor, $s)
@@ -54,7 +50,6 @@ class AnaliseController extends Controller
 
   function space($chor, $ac, $s)
   {
-    //echo "<br>ac = ..$ac..<br>s = $s<br>";var_dump($this->cifra);echo "<br><br>";
     if(($ac == ' ')||($this->cifra->invertido == 'sim')){ 
       if((($chor[0] == "E")||($chor[0] == "A"))&&(($s == 1)||(($s == 2)&&($chor[1] == 'm')))&&($this->cifra->invertido == 'nao')){
         $rotacionar = AuxiliarController::seEouA($this->texto->texto[$this->texto->ea -2], $chor, $s); //:array 
@@ -105,29 +100,33 @@ class AnaliseController extends Controller
       AnaliseController::increm($chor, $s);
     }elseif(($ac == '|')&&($chor[$s+2] == 'd')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
       $chor = AuxiliarController::seMarcado($this->texto->dimCli, $chor, $s); //array
+      $this->pularCaracteres = $chor[2];
       AnaliseController::increm($chor[0], $chor[1]);
     }elseif(($ac == '|')&&($chor[$s+2] == 's')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&($this->cifra->enarmonia == "sim")))){
       $chor = AuxiliarController::seMarcado($this->texto->susCli, $chor, $s); //array
+      $this->pularCaracteres = $chor[2];
       AnaliseController::increm($chor[0], $chor[1]);
     }elseif(($ac == '|')
             &&($chor[$s+2] == 'm')
             &&(($this->cifra->terca == "nao testada")||(($this->cifra->terca == "testada")&&($chor[$s+5] == '2')))
             &&(($s == 1)||($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))){ //ou impede menores com maj, mas aprova Cm7M
       $chor = AuxiliarController::seMarcado($this->texto->majCli, $chor, $s); //array
+      $this->pularCaracteres = $chor[2];
       AnaliseController::increm($chor[0], $chor[1]);
     }elseif(($ac == '|')&&($chor[$s+2] == 'g')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))))){
       $chor = AuxiliarController::seMarcado($this->texto->augCli, $chor, $s); //array
+      $this->pularCaracteres = $chor[2];
       AnaliseController::increm($chor[0], $chor[1]);
     }elseif(($ac == '|')&&($chor[$s+2] == 'a')&&((($s == 1)&&($this->cifra->enarmonia == "nao"))||(($s == 2)&&(($this->cifra->enarmonia == "sim")||($this->cifra->terca == "testada"))))){
       $chor = AuxiliarController::seMarcado($this->texto->addCli, $chor, $s); //array
+      $this->pularCaracteres = $chor[2];
       AnaliseController::increm($chor[0], $chor[1]);
     }else{
-      //return AnaliseController::negativo($chor);
       AnaliseController::negativo($chor);
     }
-  }//space*/
+  }//space
 
-  function negativo($chor)
+  function negativo($chor)//não é acorde
   {
     $this->ordem = 'fechada';
     $this->parentesis = "fechado";
@@ -137,8 +136,6 @@ class AnaliseController extends Controller
     $this->cifra->sustOuBemol = "natural";
     $this->cifra->sustOuBemolInv = "naturalInv";
     $this->cifra->possivelInversao = 'nao';
-    //echo "<br/><font color='red'>$chor não é acorde!.</font>";
-    //$pularCaracteres = strpos($chor, ' ');
-    //return $pularCaracteres;
+    $this->pularCaracteres = 0;
   }
 }//classe

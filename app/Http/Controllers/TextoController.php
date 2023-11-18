@@ -8,8 +8,12 @@ class TextoController extends Controller
 {
   public string $texto;
   public int $ea; //onde foi encontrado um "E" ou "A".
-  private $locaLen = []; //guarda local $i e tamanho de chor a ser analisado
   private string $textoConvertido = '';
+  public int $pularCaracteres = -10;
+  
+  private $locaLen = []; //guarda local $i e tamanho de chor a ser analisado
+  private $marcadores = [];
+  private $original = [];
     
   //   < entrada_do_cliente > => < novo_valor >
   public $agenteCli = [ "\r\n" => ' % '];
@@ -50,8 +54,7 @@ class TextoController extends Controller
 
   public function setTexto(string $texto)
   {
-    $nova = array_merge( //atenção à ordem.
-      $this->agenteCli, 
+    $this->marcadores = array_merge( //atenção à ordem.
       $this->dimCli, 
       $this->majCli, 
       $this->susCli,
@@ -59,8 +62,7 @@ class TextoController extends Controller
       $this->augCli
     );
     
-    $original = array_merge( //atenção à ordem.
-      array_keys($this->agenteCli),
+    $this->original = array_merge( //atenção à ordem.
       array_keys(   $this->dimCli),
       array_keys(   $this->majCli),
       array_keys(   $this->susCli),
@@ -68,7 +70,7 @@ class TextoController extends Controller
       array_keys(   $this->augCli)
     );
 
-    $this->texto = str_replace( $original, $nova, $texto); 
+    $this->texto = str_replace( array_merge(array_keys($this->agenteCli), $this->original), array_merge($this->agenteCli, $this->marcadores), $texto); 
   }
 
   public function getTexto()
@@ -81,17 +83,22 @@ class TextoController extends Controller
     $this->ea = $i;
   }
 
+  
+
   public function concatConvertido(array $par)
   {
-    $caractere = $this->texto[$par[0]];
+    
+    /*TESTE*/$l = strlen($this->texto);echo '<br>'.$l.'=lenght.';print_r($par);
+    
     $nChord = $par[1];
     $espaco = $par[2];
     $this->textoConvertido = $this->textoConvertido . $espaco . $nChord ;
-    //echo "<br><strong>concatena convertido:..$this->textoConvertido..</strong>";
+    echo "<br><strong>concatena convertido:..$this->textoConvertido..</strong>";
   }
 
   public function concatITexto(array $par)
   {
+    echo '<br>';print_r($par);
     $caractere = $this->texto[$par[0]];
     $espaco = $par[1];
     $this->textoConvertido = $this->textoConvertido . $espaco . $caractere ;
@@ -100,6 +107,8 @@ class TextoController extends Controller
 
   public function getTextoConvertido()
   {
+    //$this->textoConvertido = str_replace(  '%', '\r\n', $this->textoConvertido);
+    $this->textoConvertido = str_replace( $this->marcadores, $this->original, $this->textoConvertido);
     return $this->textoConvertido;
   }
   

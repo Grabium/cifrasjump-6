@@ -54,7 +54,7 @@ class CifraController extends Controller
   }
   
 
-  public function setCifraDefault(){
+  public function setCifraDefault(AnaliseController $analise){
     $this->possivelInversao = 'nao';
     $this->enarmonia = 'nao';
     $this->composto = "nao";
@@ -64,6 +64,7 @@ class CifraController extends Controller
     $this->tomDaInversao = "";//array();
     $this->dissonancia = "nao";
     $this->terca = "nao testada";
+    $analise->pularCaracteres = 0;
     //echo "<br>";
     
   }

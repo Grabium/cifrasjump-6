@@ -9,7 +9,6 @@ class PrincipalController extends Controller
 	private $texto;
 	private $cifra;
 	private $analise;
-	private $auxiliar;
 	private $conversor;
 
 	function __construct()
@@ -18,7 +17,6 @@ class PrincipalController extends Controller
 		$this->cifra = new CifraController();
 		$this->texto = new TextoController();
 		$this->analise = new AnaliseController();
-		$this->auxiliar = new AuxiliarController();
 		$this->conversor = new ConversorController();
 	}
 	
@@ -29,11 +27,12 @@ class PrincipalController extends Controller
 	}
 
 	public function loopTexto($texto){
-		/*TESTE*/echo $texto.'<br><br>';
+		/*TESTE*/echo '<br><br><br><br><br><br><br>'.$texto.'<br><br>';
 		$l = strlen($texto);
 		
 		for($i=0; $i<$l; $i++){//faz a leitura do texto
 			$car = $texto[$i];
+													 $p=$this->analise->ordem;settype($p, 'string'); echo "<br>car:..$car...e ordem:..$p<br>";
 			if($car == ' '){
 				$this->analise->ordem = 'aberta';
 				continue;
@@ -47,16 +46,19 @@ class PrincipalController extends Controller
 					$chor = substr($texto, $i, ($this->complChor+1)); 
 					$chor = $chor . " ";
 					$chor = substr($chor, 0, (1+strpos($chor, " ")));
+					echo "<br><br><hr>analizando chor:..$chor..";
 					if(strlen($chor) == 2){  //quando o ultimo caractere, sozinho, é um acorde. 
-						$this->analise->pre_positivo($chor, $this->cifra);//antes de encaminhar positivo(), análise recebe objeto.
+						$this->analise->pre_positivo($chor, $this->cifra, $this->texto);//antes de encaminhar positivo(), análise recebe objeto.
 					}else{
-						$pularCaracteres = $this->analise->analisar1($this->cifra, $this->texto, $chor); //aqui, $rotacionar = $chor.' ';
-						$i = ($i + $pularCaracteres);
+						$this->analise->analisar1($this->cifra, $this->texto, $chor);
+						/*TESTE*/echo "<br><br>I:..$i..";
+						$i = ($i + $this->analise->pularCaracteres);
+						/*TESTE*/$pc = $this->analise->pularCaracteres;settype($pc, 'string');echo " + pula caracteres: ..$pc.. = I: ..$i..";
 					}
 					if($this->analise->ordem == 'converter'){ //se foi positivo.
 						$nChord = $this->conversor->conversor($this->cifra);
-						$this->cifra->setCifraDefault();
 					}
+					$this->cifra->setCifraDefault($this->analise);
 				}////if ABCDEFG
 			}// se ordem == aberta
 			$concat = ($this->analise->ordem == 'converter')?'concatConvertido':'concatITexto';
