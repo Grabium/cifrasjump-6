@@ -88,17 +88,17 @@ class TextoController extends Controller
   public function concatConvertido(array $par)
   {
     
-    /*TESTE*/$l = strlen($this->texto);echo '<br>'.$l.'=lenght.';print_r($par);
+    /*TESTE*///$l = strlen($this->texto);echo '<br>'.$l.'=lenght.';print_r($par);
     
     $nChord = $par[1];
     $espaco = $par[2];
     $this->textoConvertido = $this->textoConvertido . $espaco . $nChord ;
-    echo "<br><strong>concatena convertido:..$this->textoConvertido..</strong>";
+    /*TESTE*///echo "<br><strong>concatena convertido:..$this->textoConvertido..</strong>";
   }
 
   public function concatITexto(array $par)
   {
-    echo '<br>';print_r($par);
+    /*TESTE*///echo '<br>';print_r($par);
     $caractere = $this->texto[$par[0]];
     $espaco = $par[1];
     $this->textoConvertido = $this->textoConvertido . $espaco . $caractere ;
@@ -109,7 +109,8 @@ class TextoController extends Controller
   {
     //$this->textoConvertido = str_replace(  '%', '\r\n', $this->textoConvertido);
     $this->textoConvertido = str_replace( $this->marcadores, $this->original, $this->textoConvertido);
-    return $this->textoConvertido;
+    $tConvert = explode(  '%', $this->textoConvertido); //os elementos da array são linhas.
+    return $tConvert;
   }
   
 }

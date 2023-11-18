@@ -40,7 +40,7 @@ class ConversorController extends Controller
       $tipo = str_replace($tomInv, $nInv, $tipo);
     }
     $nChord = $n . $tipo;
-    echo "<br /><font color='red'>Convertido para: $nChord</font>";
+    /*TESTE*///echo "<br /><font color='red'>Convertido para: $nChord</font>";
     return $nChord;
   }
 

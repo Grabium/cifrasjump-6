@@ -119,12 +119,11 @@ class AuxiliarController extends Controller
     $trecho = substr($chor, $s, 6);//espera receber marcador sem espaço.
     if(array_search($trecho, $arr)){//se o marcador pertence à array.
       $pularCaracteres = (strpos($chor, ' ')-1);
-      settype($pularCaracteres, 'string');echo "<br>pular caracteres em marcado:..$pularCaracteres..";
+      /*TESTE*///settype($pularCaracteres, 'string');echo "<br>pular caracteres em marcado:..$pularCaracteres..";
       $pularS = array_keys($arr, $trecho);//recebe o tipo original sem espaço.
       $chor = substr_replace($chor, $pularS, $s, 6);//recebe acorde original com espaço.
       $s = ($s + strlen($pularS[0]) -1);
     }
-
     return [$chor, $s, $pularCaracteres];//correr o $s até o [-1] de $trecho.
   }
 
