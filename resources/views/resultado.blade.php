@@ -5,7 +5,7 @@
   <body>
     <h1>Resultado</h1>
     @foreach($linhas as $linha)
-      <p>{{$linha}}</p>
+      <br />{{$linha}}
     @endforeach
   </body>
 </html>
