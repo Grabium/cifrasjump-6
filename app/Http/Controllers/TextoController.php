@@ -16,7 +16,7 @@ class TextoController extends Controller
   private $original = [];
     
   //   < entrada_do_cliente > => < novo_valor >
-  public $agenteCli = [ "\r\n" => ' % '];
+  public $agenteCli = [ "\r\n" => ' % ', "\n"=>' % '];
 
   //diminuto
   public $dimCli = [
@@ -92,38 +92,29 @@ class TextoController extends Controller
 
   public function concatConvertido(array $par)
   {
-    
-    /*TESTE*///$l = strlen($this->texto);echo '<br>'.$l.'=lenght.';print_r($par);
-    
     $nChord = $par[1];
     $espaco = $par[2];
     $this->textoConvertido = $this->textoConvertido . $espaco . $nChord ;
-    //$this->textoConvertido[] = $espaco . $nChord ;
-    
   }
 
   public function concatITexto(array $par)
   {
-    /*TESTE*///echo '<br>';print_r($par);
     $caractere = $this->texto[$par[0]];
     $espaco = $par[1];
     $this->textoConvertido = $this->textoConvertido . $espaco . $caractere;
-    //$this->textoConvertido[] = $espaco . $caractere ;
-    
   }
 
   public function getTextoConvertido()
   {
-    //$tConvert = [];
-    //$this->textoConvertido = str_replace(  '%', '\r\n', $this->textoConvertido);
-    $this->textoConvertido = str_replace( $this->marcadores, $this->original, $this->textoConvertido); //marcadores não convertidos são substituidos pelo o original.
-    //$this->tConvert = explode(  '%', $this->textoConvertido); //os elementos da array são linhas.
-    $tConvert = explode(  "\n", $this->textoConvertido);
-    $tamm = count($tConvert);
-    //$tConvert = $this->textoConvertido;
-    //dd($tConvert);
-    return [$tConvert, 'tamanho em TextoController: '=>$tamm];
-    //return $this->textoConvertido;
+    $this->textoConvertido = str_replace( 
+      $this->marcadores,
+      $this->original,
+      $this->textoConvertido
+    ); //marcadores não convertidos são substituidos pelo texto original.
+    
+    $tConvert = explode(  "%", $this->textoConvertido);
+    //$tamm = count($tConvert);
+    return ['texto_convertido'=>$tConvert];//, 'tamanho'=>$tamm];
   }
   
 }

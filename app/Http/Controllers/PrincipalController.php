@@ -10,6 +10,7 @@ class PrincipalController extends Controller
 	private $cifra;
 	private $analise;
 	private $conversor;
+	//public $teste = [];
 
 	function __construct()
 	{
@@ -23,10 +24,9 @@ class PrincipalController extends Controller
 	public function recebetexto(Request $request){
 		$this->conversor->setSemiTons($request['semiTons']); //criar um middleware para autenticar int|min=-11|max=11
 		$this->texto->setTexto($request['aSeparar']);
-		$tConvert = $this->loopTexto($this->texto->getTexto());//recebe array de linhas
-		$tippo = gettype($tConvert);
-		$tamm = count($tConvert); //conta indices de array
-		return  response()->json(['tipo'=>$tippo,'tamanho em PrincipalController'=>$tamm,'msg'=>$tConvert]);
+		$tConvert = $this->loopTexto($this->texto->getTexto());//recebe array de linhas 'msg'
+		$semiTons = $this->conversor->getSemiTons();
+		return response()->json(['alteracao_ST'=>$semiTons,'msg'=>$tConvert]);//, 'teste'=>$this->teste]);
 	}
 
 	public function loopTexto($texto){
@@ -34,7 +34,6 @@ class PrincipalController extends Controller
 		
 		for($i=0; $i<$l; $i++){//faz a leitura do texto
 			$car = $texto[$i];
-			/*TESTE*///$p=$this->analise->ordem;settype($p, 'string'); echo "<br>car:..$car...e ordem:..$p<br>";
 			if($car == ' '){
 				$this->analise->ordem = 'aberta';
 				continue;
@@ -47,13 +46,11 @@ class PrincipalController extends Controller
 				if(in_array($car, $this->analise->naturais)){ 
 					$chor = substr($texto, $i, ($this->complChor+1)); 
 					$chor = $chor . " ";
-					$chor = substr($chor, 0, (1+strpos($chor, " ")));
-					//echo "<br><br><hr>analizando chor:..$chor..";
+					//$chor = substr($chor, 0, (1+strpos($chor, " "))); //prejudica a autenticação do E&A, pois é preciso "ver" além do space.
 					if(strlen($chor) == 2){  //quando o ultimo caractere, sozinho, é um acorde. 
 						$this->analise->pre_positivo($chor, $this->cifra, $this->texto);//antes de encaminhar positivo(), análise recebe objeto.
 					}else{
 						$this->analise->analisar1($this->cifra, $this->texto, $chor);
-						/*TESTE*///echo "<br><br>I:..$i..";
 						$i = ($i + $this->analise->pularCaracteres);
 					}
 					if($this->analise->ordem == 'converter'){ //se foi positivo.
@@ -69,7 +66,6 @@ class PrincipalController extends Controller
 			$this->analise->ordem = 'fechada';
 		}//for() principal que define o $chor
 		$tConvert = $this->texto->getTextoConvertido();//array com linhas
-		//echo "<br><strong>Texto concatenado:..$tConvert..</strong>";
 		return $tConvert; 
 		
 	}//function loopTexto()

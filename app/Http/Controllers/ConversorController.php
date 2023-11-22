@@ -16,6 +16,11 @@ class ConversorController extends Controller
     settype($semiTons, 'integer'); //refazer isso.
     $this->semiTons = $semiTons;
   }
+
+  public function getSemiTons()
+  {
+    return $this->semiTons;
+  }
   
   public function conversor(CifraController $cifra){
     $fundamental = $cifra->guardaCifras[0];//parte que será convertida
