@@ -72,7 +72,10 @@ class TextoController extends Controller
 
     
 
-    $this->texto = str_replace( array_merge(array_keys($this->agenteCli), $this->original), array_merge($this->agenteCli, $this->marcadores), $texto); 
+    $this->texto = str_replace( 
+      array_merge(array_keys($this->agenteCli), $this->original),
+      array_merge($this->agenteCli, $this->marcadores),
+      $texto); 
   }
 
   public function getTexto()
@@ -111,12 +114,16 @@ class TextoController extends Controller
 
   public function getTextoConvertido()
   {
+    //$tConvert = [];
     //$this->textoConvertido = str_replace(  '%', '\r\n', $this->textoConvertido);
     $this->textoConvertido = str_replace( $this->marcadores, $this->original, $this->textoConvertido); //marcadores não convertidos são substituidos pelo o original.
-    //$tConvert = explode(  '%', $this->textoConvertido); //os elementos da array são linhas.
-    $tConvert = $this->textoConvertido;
-    //var_dump($tConvert);
-    return $tConvert;
+    //$this->tConvert = explode(  '%', $this->textoConvertido); //os elementos da array são linhas.
+    $tConvert = explode(  "\n", $this->textoConvertido);
+    $tamm = count($tConvert);
+    //$tConvert = $this->textoConvertido;
+    //dd($tConvert);
+    return [$tConvert, 'tamanho em TextoController: '=>$tamm];
+    //return $this->textoConvertido;
   }
   
 }
