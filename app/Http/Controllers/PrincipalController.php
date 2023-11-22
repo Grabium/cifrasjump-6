@@ -21,10 +21,28 @@ class PrincipalController extends Controller
 	}
 	
 	public function recebetexto(Request $request){
+		//return 'OK';
 		$this->conversor->setSemiTons($request['semiTons']); //criar um middleware para autenticar int|min=-11|max=11
 		$this->texto->setTexto($request['aSeparar']);
 		$tConvert = $this->loopTexto($this->texto->getTexto());//recebe array de linhas
-		return view('resultado', ['linhas'=>$tConvert]);
+		//return $tConvert;
+		//return view('resultado', ['linhas'=>$tConvert]);
+		$tConvert = mb_convert_encoding($tConvert, "UTF-8", "UTF-8");
+		//$tConv = explode('\n', $tConvert);
+		//$tConvert->toJson();
+		$tippo = gettype($tConvert);
+		//$tamm = count($tConvert); //conta indices de array
+		//$tConvert = json($tConvert);
+		//return  response()->json(['tipo'=>$tippo,'tam'=>$tamm,'msg'=>$tConvert]);
+		return  response()->json(['tipo'=>$tippo,'msg'=>$tConvert]);
+
+	/*
+ 	* Tem que arranjar um jeito de devolver um json e neste json uma aray e objetos
+	* para que possa ser iterável na aplicação cliente.
+ 	*
+ 	*
+ 	*/
+		
 	}
 
 	public function loopTexto($texto){
@@ -70,7 +88,8 @@ class PrincipalController extends Controller
 		}//for() principal que define o $chor
 		$tConvert = $this->texto->getTextoConvertido();//array com linhas
 		//echo "<br><strong>Texto concatenado:..$tConvert..</strong>";
-		return $tConvert;
+		return $tConvert; 
+		
 	}//function loopTexto()
 	
 	

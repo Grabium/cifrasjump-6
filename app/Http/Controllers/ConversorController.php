@@ -11,8 +11,9 @@ class ConversorController extends Controller
   private int $semiTons;
 
 
-  public function setSemiTons(int $semiTons)
+  public function setSemiTons($semiTons)
   {
+    settype($semiTons, 'integer'); //refazer isso.
     $this->semiTons = $semiTons;
   }
   

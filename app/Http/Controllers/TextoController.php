@@ -52,7 +52,7 @@ class TextoController extends Controller
     'sus11'  => '|_g003'];
   
 
-  public function setTexto(string $texto)
+  public function setTexto($texto)
   {
     $this->marcadores = array_merge( //atenção à ordem.
       $this->dimCli, 
@@ -69,6 +69,8 @@ class TextoController extends Controller
       array_keys(   $this->addCli),
       array_keys(   $this->augCli)
     );
+
+    
 
     $this->texto = str_replace( array_merge(array_keys($this->agenteCli), $this->original), array_merge($this->agenteCli, $this->marcadores), $texto); 
   }
@@ -93,7 +95,8 @@ class TextoController extends Controller
     $nChord = $par[1];
     $espaco = $par[2];
     $this->textoConvertido = $this->textoConvertido . $espaco . $nChord ;
-    /*TESTE*///echo "<br><strong>concatena convertido:..$this->textoConvertido..</strong>";
+    //$this->textoConvertido[] = $espaco . $nChord ;
+    
   }
 
   public function concatITexto(array $par)
@@ -101,15 +104,18 @@ class TextoController extends Controller
     /*TESTE*///echo '<br>';print_r($par);
     $caractere = $this->texto[$par[0]];
     $espaco = $par[1];
-    $this->textoConvertido = $this->textoConvertido . $espaco . $caractere ;
-    //echo "<br><strong>concatena i de texto:..$this->textoConvertido..</strong>";
+    $this->textoConvertido = $this->textoConvertido . $espaco . $caractere;
+    //$this->textoConvertido[] = $espaco . $caractere ;
+    
   }
 
   public function getTextoConvertido()
   {
     //$this->textoConvertido = str_replace(  '%', '\r\n', $this->textoConvertido);
-    $this->textoConvertido = str_replace( $this->marcadores, $this->original, $this->textoConvertido);
-    $tConvert = explode(  '%', $this->textoConvertido); //os elementos da array são linhas.
+    $this->textoConvertido = str_replace( $this->marcadores, $this->original, $this->textoConvertido); //marcadores não convertidos são substituidos pelo o original.
+    //$tConvert = explode(  '%', $this->textoConvertido); //os elementos da array são linhas.
+    $tConvert = $this->textoConvertido;
+    //var_dump($tConvert);
     return $tConvert;
   }
   
